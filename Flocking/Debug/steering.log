@@ -1,2 +1,56 @@
-﻿  steering.vcxproj -> C:\Users\laura.reilly\Desktop\NETWORKEDBOIDZ\Flocking\Debug\steering.exe
-  steering.vcxproj -> C:\Users\laura.reilly\Desktop\NETWORKEDBOIDZ\Flocking\Debug\steering.pdb (Full PDB)
+﻿  WanderSteering.cpp
+  WanderAndChaseSteering.cpp
+  UnitManager.cpp
+  Unit.cpp
+  Transaction.cpp
+  SteeringComponent.cpp
+c:\users\laura.reilly\desktop\project2networking\flocking\steeringcomponent.cpp(62): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\laura.reilly\desktop\project2networking\flocking\steeringcomponent.cpp(67): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\laura.reilly\desktop\project2networking\flocking\steeringcomponent.cpp(73): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\laura.reilly\desktop\project2networking\flocking\steeringcomponent.cpp(85): warning C4244: 'argument': conversion from 'const UnitID' to 'float', possible loss of data
+c:\users\laura.reilly\desktop\project2networking\flocking\steeringcomponent.cpp(91): warning C4244: 'argument': conversion from 'const UnitID' to 'float', possible loss of data
+  Steering.cpp
+  SpriteManager.cpp
+  Sprite.cpp
+  SeparationSteering.cpp
+  SeekSteering.cpp
+  SeekAndFace.cpp
+  PositionComponent.cpp
+  PlayerMoveToMessage.cpp
+  PhysicsComponent.cpp
+  NotificationQueue.cpp
+  NotificationProcessor.cpp
+  Notification.cpp
+  main.cpp
+  InputManager.cpp
+  Generating Code...
+  Compiling...
+  GroupAlignmentSteering.cpp
+  GraphicsSystem.cpp
+  GraphicsBufferManager.cpp
+  GraphicsBuffer.cpp
+  GameMessageManager.cpp
+  GameMessage.cpp
+  Game.cpp
+  Font.cpp
+  FlockingSteering.cpp
+  FaceSteering.cpp
+  ExitGameMessage.cpp
+  DeleteUnitMessage.cpp
+  Data.cpp
+  ComponentManager.cpp
+  Component.cpp
+  Color.cpp
+  CohesionSteering.cpp
+  ArriveSteering.cpp
+  ArriveAndFaceSteering.cpp
+  AddUnitMessage.cpp
+  Generating Code...
+DeanLibDebug.lib(MemoryPool.obj) : warning LNK4099: PDB 'DeanLib.pdb' was not found with 'DeanLibDebug.lib(MemoryPool.obj)' or at 'C:\Users\laura.reilly\Desktop\Project2Networking\Flocking\Debug\DeanLib.pdb'; linking object as if no debug info
+DeanLibDebug.lib(MemoryTracker.obj) : warning LNK4099: PDB 'DeanLib.pdb' was not found with 'DeanLibDebug.lib(MemoryTracker.obj)' or at 'C:\Users\laura.reilly\Desktop\Project2Networking\Flocking\Debug\DeanLib.pdb'; linking object as if no debug info
+DeanLibDebug.lib(PerformanceTracker.obj) : warning LNK4099: PDB 'DeanLib.pdb' was not found with 'DeanLibDebug.lib(PerformanceTracker.obj)' or at 'C:\Users\laura.reilly\Desktop\Project2Networking\Flocking\Debug\DeanLib.pdb'; linking object as if no debug info
+DeanLibDebug.lib(Timer.obj) : warning LNK4099: PDB 'DeanLib.pdb' was not found with 'DeanLibDebug.lib(Timer.obj)' or at 'C:\Users\laura.reilly\Desktop\Project2Networking\Flocking\Debug\DeanLib.pdb'; linking object as if no debug info
+DeanLibDebug.lib(Trackable.obj) : warning LNK4099: PDB 'DeanLib.pdb' was not found with 'DeanLibDebug.lib(Trackable.obj)' or at 'C:\Users\laura.reilly\Desktop\Project2Networking\Flocking\Debug\DeanLib.pdb'; linking object as if no debug info
+DeanLibDebug.lib(Vector2D.obj) : warning LNK4099: PDB 'DeanLib.pdb' was not found with 'DeanLibDebug.lib(Vector2D.obj)' or at 'C:\Users\laura.reilly\Desktop\Project2Networking\Flocking\Debug\DeanLib.pdb'; linking object as if no debug info
+  steering.vcxproj -> C:\Users\laura.reilly\Desktop\Project2Networking\Flocking\Debug\steering.exe
+  steering.vcxproj -> C:\Users\laura.reilly\Desktop\Project2Networking\Flocking\Debug\steering.pdb (Full PDB)
