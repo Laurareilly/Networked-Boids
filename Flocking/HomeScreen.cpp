@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "InputManager.h"
 #include "ActiveGameState.h"
+#include "NetworkManager.h"
 
 HomeScreen::HomeScreen()
 {

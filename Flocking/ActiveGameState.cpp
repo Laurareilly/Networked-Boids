@@ -2,6 +2,8 @@
 #include "UnitManager.h"
 #include "Game.h"
 #include "HomeScreen.h"
+#include "ApplicationState.h"
+#include "NetworkManager.h"
 
 ActiveGameState::ActiveGameState()
 {
@@ -11,6 +13,22 @@ ActiveGameState::ActiveGameState()
 	data->doesUpdateInput = 1;
 	data->doesUpdateState = 1;
 	data->doesUpdateNetworking = 1;
+}
+
+void ActiveGameState::UpdateState()
+{
+}
+
+void ActiveGameState::UpdateInput()
+{
+}
+
+void ActiveGameState::UpdateNetworking()
+{
+}
+
+void ActiveGameState::Display()
+{
 }
 
 void ActiveGameState::GoToNextState(ApplicationState * passData)

@@ -1,5 +1,6 @@
 #pragma once
-#include "ApplicationState.h"
+
+class ApplicationState;
 
 class ActiveGameState : public ApplicationState
 {

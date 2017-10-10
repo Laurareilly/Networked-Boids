@@ -1,7 +1,10 @@
-#pragma once
+#ifndef APPLICATION_STATE
+#define APPLICATION_STATE
+
 
 #include <string>
-#include "NetworkManager.h"
+
+class NetworkManager;
 
 class ApplicationState abstract
 {
@@ -23,8 +26,8 @@ public:
 	virtual int getIsLocal() = 0;
 	virtual void AcceptedToServer() = 0;
 
-	ApplicationState() { mpNetworkManager = new NetworkManager(); };
-	~ApplicationState() { delete mpNetworkManager; mpNetworkManager = nullptr; };
+	ApplicationState();
+	~ApplicationState();
 
 protected:
 	ApplicationState *next, *previous;
@@ -51,3 +54,4 @@ protected:
 
 	NetworkManager *mpNetworkManager;
 };
+#endif // APPLICATION_STATE
