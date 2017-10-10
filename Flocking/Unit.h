@@ -29,7 +29,7 @@ public:
 	//void processTransactions();
 	void draw() const;
 	float getFacing() const;
-	void update(float elapsedTime){};
+	void update(float elapsedTime) {};
 
 	PositionComponent* getPositionComponent() const;
 	PhysicsComponent* getPhysicsComponent() const;
@@ -41,6 +41,12 @@ public:
 	void setShowTarget(bool val) { mShowTarget = val; };
 
 	void setSteering(Steering::SteeringType type, Vector2D targetLoc = ZERO_VECTOR2D, UnitID targetUnitID = INVALID_UNIT_ID);
+
+	UnitID getID() { return mID; }
+	void setID(UnitID id) { mID = id; }
+
+	bool getShouldBeDeleted() { return mShouldBeDeleted; }
+	void setShouldBeDeleted(bool aDelete) { mShouldBeDeleted = aDelete; }
 
 private:
 	UnitID mID;
@@ -54,6 +60,7 @@ private:
 	float mMaxRotAcc;
 	float mMaxRotVel;
 	bool mShowTarget;
+	bool mShouldBeDeleted;
 
 	Unit(const Sprite& sprite);
 	virtual ~Unit();

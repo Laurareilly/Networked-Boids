@@ -44,7 +44,7 @@ Unit* UnitManager::createUnit(const Sprite& sprite, bool shouldWrap, const Posit
 
 		//create some components
 		ComponentManager* pComponentManager = gpGame->getComponentManager();
-		pUnit->mPositionComponentID = pComponentManager->allocatePositionComponent(posData,shouldWrap);
+		pUnit->mPositionComponentID = pComponentManager->allocatePositionComponent(posData, shouldWrap);
 		pUnit->mPhysicsComponentID = pComponentManager->allocatePhysicsComponent(pUnit->mPositionComponentID, physicsData);
 		pUnit->mSteeringComponentID = pComponentManager->allocateSteeringComponent(pUnit->mPhysicsComponentID);
 
@@ -73,11 +73,11 @@ Unit* UnitManager::createRandomUnit(const Sprite& sprite)
 	int posY = rand() % gpGame->getGraphicsSystem()->getHeight();
 	int velX = rand() % 50 - 25;
 	int velY = rand() % 40 - 20;
-	Unit* pUnit = createUnit(sprite, false, PositionData(Vector2D(posX,posY),0), PhysicsData(Vector2D(velX,velY),Vector2D(0.1f,0.1f), 0.1f, 0.05f));
+	Unit* pUnit = createUnit(sprite, false, PositionData(Vector2D(posX, posY), 0), PhysicsData(Vector2D(velX, velY), Vector2D(0.1f, 0.1f), 0.1f, 0.05f));
 	if (pUnit != NULL)
 	{
 		//pUnit->setSteering(Steering::SEEK, Vector2D(rand() % gpGame->getGraphicsSystem()->getWidth(), rand() % gpGame->getGraphicsSystem()->getHeight()));
-		pUnit->setSteering(Steering::SEEK, Vector2D(gpGame->getGraphicsSystem()->getWidth()/2, gpGame->getGraphicsSystem()->getHeight()/2));
+		pUnit->setSteering(Steering::SEEK, Vector2D(gpGame->getGraphicsSystem()->getWidth() / 2, gpGame->getGraphicsSystem()->getHeight() / 2));
 	}
 	return pUnit;
 }
@@ -102,7 +102,7 @@ void UnitManager::deleteUnit(const UnitID& id)
 	{
 		Unit* pUnit = it->second;//hold for later
 
-		//remove from map
+								 //remove from map
 		mUnitMap.erase(it);
 
 		//remove components
@@ -111,7 +111,10 @@ void UnitManager::deleteUnit(const UnitID& id)
 		pComponentManager->deallocatePositionComponent(pUnit->mPositionComponentID);
 		pComponentManager->deallocateSteeringComponent(pUnit->mSteeringComponentID);
 
-		//call destructor
+
+		msNextUnitID--; //only works if we're taking from the end of the map
+
+						//call destructor
 		pUnit->~Unit();
 
 		//free the object in the pool
@@ -124,7 +127,7 @@ void UnitManager::deleteRandomUnit()
 	Uint32 target = rand() % mUnitMap.size();
 	Uint32 cnt = 0;
 
-	if(mUnitMap.size() <= 1) //make sure we dont try to delete any enemies if there aren't any
+	if (mUnitMap.size() <= 1) //make sure we dont try to delete any enemies if there aren't any
 	{
 		return;
 	}
@@ -132,7 +135,7 @@ void UnitManager::deleteRandomUnit()
 	{
 		if (cnt == target)
 		{
-			if(it->first == PLAYER_UNIT_ID) //skip over the player unit
+			if (it->first == PLAYER_UNIT_ID) //skip over the player unit
 			{
 				deleteRandomUnit();
 				return;
@@ -143,11 +146,27 @@ void UnitManager::deleteRandomUnit()
 	}
 }
 
+void UnitManager::deleteIfShouldBeDeleted()
+{
+	for (auto it = mUnitMap.rbegin(); it != mUnitMap.rend(); ++it)
+	{
+		if (it->second->getShouldBeDeleted())
+		{
+			deleteUnit(it->first);
+		}
+	}
+}
+
 void UnitManager::drawAll() const
 {
 	for (auto it = mUnitMap.begin(); it != mUnitMap.end(); ++it)
 	{
 		it->second->draw();
+	}
+
+	for (unsigned int i = 0; i < 15; ++i)
+	{
+		mReceivedUnits[i]->draw();
 	}
 }
 
@@ -156,5 +175,14 @@ void UnitManager::updateAll(float elapsedTime)
 	for (auto it = mUnitMap.begin(); it != mUnitMap.end(); ++it)
 	{
 		it->second->update(elapsedTime);
+	}
+}
+
+
+void UnitManager::updateAll(bool shouldDelete)
+{
+	for (auto it = mUnitMap.begin(); it != mUnitMap.end(); ++it)
+	{
+		it->second->setShouldBeDeleted(shouldDelete);
 	}
 }

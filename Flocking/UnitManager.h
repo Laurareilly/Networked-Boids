@@ -24,7 +24,7 @@ class UnitManager : public Trackable
 
 public:
 	UnitManager(Uint32 maxSize);
-	~UnitManager(){};
+	~UnitManager() {};
 
 	Unit* createUnit(const Sprite& sprite, bool shouldWrap = true, const PositionData& posData = ZERO_POSITION_DATA, const PhysicsData& physicsData = ZERO_PHYSICS_DATA, const UnitID& id = INVALID_UNIT_ID);
 	Unit* createPlayerUnit(const Sprite& sprite, bool shouldWrap = true, const PositionData& posData = ZERO_POSITION_DATA, const PhysicsData& physicsData = ZERO_PHYSICS_DATA);
@@ -33,17 +33,23 @@ public:
 	Unit* getUnit(const UnitID& id) const;
 	void deleteUnit(const UnitID& id);
 	void deleteRandomUnit();
+	void deleteIfShouldBeDeleted();
 
 	void drawAll() const;
 	void updateAll(float elapsedTime);
+	void updateAll(bool shouldDelete);
 
 	Unit* getPlayerUnit() const { return getUnit(PLAYER_UNIT_ID); };
 
 	static int mBoidsOnScreen;
 
+
+
+
 private:
 	static UnitID msNextUnitID;
 	MemoryPool mPool;
 	std::map<UnitID, Unit*> mUnitMap;
+	Unit* mReceivedUnits[15]; //15 max boids for each player
 };
 

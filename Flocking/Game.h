@@ -19,6 +19,9 @@ class ComponentManager;
 class UnitManager;
 class Font;
 class InputManager;
+class HomeScreen;
+class ApplicationState;
+class ActiveGameState;
 
 const IDType BACKGROUND_SPRITE_ID = 0;
 const IDType PLAYER_ICON_SPRITE_ID = 1;
@@ -53,6 +56,14 @@ public:
 	inline Timer* getMasterTimer() const { return mpMasterTimer; };
 	inline double getCurrentTime() const { return mpMasterTimer->getElapsedTime(); };
 	inline Font* getFont() const { return mpFont; };
+
+
+
+	ApplicationState *theState;
+	HomeScreen *theHomeScreen;
+	ActiveGameState *theGameState;
+
+	InputManager* getInputManager() { return mpInputManager; }
 
 private:
 	GraphicsSystem* mpGraphicsSystem;

@@ -30,6 +30,10 @@
 #include <time.h>    
 #include <stdlib.h>
 
+#include "ApplicationState.h"
+#include "HomeScreen.h"
+#include "ActiveGameState.h"
+
 Game* gpGame = NULL;
 
 const int WIDTH = 1024;
@@ -51,6 +55,9 @@ Game::Game()
 	,mpUnitManager(NULL)
 	,mpInputManager(NULL)
 {
+	theHomeScreen = new HomeScreen();
+	theGameState = new ActiveGameState();
+	//theState = theHomeScreen;
 }
 
 Game::~Game()

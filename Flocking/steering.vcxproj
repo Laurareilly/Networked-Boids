@@ -11,7 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ActiveGameState.h" />
     <ClInclude Include="AddUnitMessage.h" />
+    <ClInclude Include="ApplicationState.h" />
     <ClInclude Include="ArriveAndFaceSteering.h" />
     <ClInclude Include="ArriveSteering.h" />
     <ClInclude Include="CohesionSteering.h" />
@@ -33,7 +35,9 @@
     <ClInclude Include="GraphicsBufferManager.h" />
     <ClInclude Include="GraphicsSystem.h" />
     <ClInclude Include="GroupAlignmentSteering.h" />
+    <ClInclude Include="HomeScreen.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="NetworkManager.h" />
     <ClInclude Include="Notification.h" />
     <ClInclude Include="NotificationProcessor.h" />
     <ClInclude Include="NotificationQueue.h" />
@@ -55,6 +59,7 @@
     <ClInclude Include="WanderSteering.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ActiveGameState.cpp" />
     <ClCompile Include="AddUnitMessage.cpp" />
     <ClCompile Include="ArriveAndFaceSteering.cpp" />
     <ClCompile Include="ArriveSteering.cpp" />
@@ -75,8 +80,10 @@
     <ClCompile Include="GraphicsBufferManager.cpp" />
     <ClCompile Include="GraphicsSystem.cpp" />
     <ClCompile Include="GroupAlignmentSteering.cpp" />
+    <ClCompile Include="HomeScreen.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="NetworkManager.cpp" />
     <ClCompile Include="Notification.cpp" />
     <ClCompile Include="NotificationProcessor.cpp" />
     <ClCompile Include="NotificationQueue.cpp" />

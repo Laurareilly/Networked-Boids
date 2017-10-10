@@ -11,12 +11,13 @@
 #include "SpriteManager.h"
 
 
-Unit::Unit(const Sprite& sprite) 
+Unit::Unit(const Sprite& sprite)
 	:mSprite(sprite)
-	,mPositionComponentID(INVALID_COMPONENT_ID)
-	,mPhysicsComponentID(INVALID_COMPONENT_ID)
-	,mSteeringComponentID(INVALID_COMPONENT_ID)
-	,mShowTarget(false)
+	, mPositionComponentID(INVALID_COMPONENT_ID)
+	, mPhysicsComponentID(INVALID_COMPONENT_ID)
+	, mSteeringComponentID(INVALID_COMPONENT_ID)
+	, mShowTarget(false)
+	, mShouldBeDeleted(false)
 {
 }
 
@@ -82,25 +83,25 @@ void Unit::setSteering(Steering::SteeringType type, Vector2D targetLoc /*= ZERO_
 
 /*void Unit::postTransaction(const Transaction& transaction)
 {
-	switch(transaction.type)
-	{
-	case POSITION_TRANSACTION:
-	{
-		bool posted = mPositionTransactionQueue.pushBack(static_cast<const PositionTransaction&>(transaction));
-		assert(posted);
-		break;
-	}
-	default:
-		break;
-	}
+switch(transaction.type)
+{
+case POSITION_TRANSACTION:
+{
+bool posted = mPositionTransactionQueue.pushBack(static_cast<const PositionTransaction&>(transaction));
+assert(posted);
+break;
+}
+default:
+break;
+}
 }
 
 void Unit::processTransactions()
 {
-	PositionTransaction trans;
-	while (mPositionTransactionQueue.popFront(trans))
-	{
+PositionTransaction trans;
+while (mPositionTransactionQueue.popFront(trans))
+{
 
-	}
+}
 
 }*/
