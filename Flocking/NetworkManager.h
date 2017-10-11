@@ -14,7 +14,7 @@ and/or communicate a copy of this project to a plagiarism
 */
 
 
-
+#include "RakNet\WindowsIncludes.h"
 #include "RakNet\RakNetTypes.h"
 #include "RakNet\MessageIdentifiers.h"
 #include "RakNet\RakPeerInterface.h"
@@ -32,15 +32,15 @@ public:
 	NetworkManager() {};
 	~NetworkManager() {};
 
-	void initializeNetwork();
+	void initializeNetwork() {};
 
-	bool initServer(int cPort);
-	void initClient(int cPort, char* cIP);
+	bool initServer(int cPort) { return 1; };
+	void initClient(int cPort, char* cIP) {};
 	void Update();
-	void ShutdownServer();
+	void ShutdownServer() {};
 
-	void SendNetworkedMessage(char* cMessage, int cSenderID);
-	void DisconnectFromPeers();
+	void SendNetworkedMessage(char* cMessage, int cSenderID) {};
+	void DisconnectFromPeers() {};
 
 	void SendBoidData(Unit *units[30]); //take in boid list as param
 

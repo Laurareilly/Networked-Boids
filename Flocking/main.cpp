@@ -9,6 +9,7 @@
  */
 #define ALLEGRO_USE_CONSOLE
 
+#include "RakNet\WindowsIncludes.h"
 #include <stdio.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_audio.h>

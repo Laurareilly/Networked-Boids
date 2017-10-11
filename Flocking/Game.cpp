@@ -1,3 +1,4 @@
+#include "RakNet\WindowsIncludes.h"
 #include <stdio.h>
 #include <assert.h>
 #include <allegro5/allegro.h>

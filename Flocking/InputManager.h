@@ -4,6 +4,7 @@
 * http://www.jameskeats.com/blogs/post/Allegro-Input-Handling-Game-Architecture
 */
 #pragma once
+#include <RakNet/WindowsIncludes.h>
 #include <allegro5/allegro.h>
 
 typedef unsigned char byte_t;
