@@ -57,7 +57,7 @@ Game::Game()
 {
 	theHomeScreen = new HomeScreen();
 	theGameState = new ActiveGameState();
-	//theState = theHomeScreen;
+	theState = theHomeScreen;
 }
 
 Game::~Game()
@@ -184,12 +184,6 @@ bool Game::init()
 		mpSpriteManager->createAndManageSprite(TARGET_SPRITE_ID, pTargetBuffer, 0, 0, pTargetBuffer->getWidth(), pTargetBuffer->getHeight());
 	}
 
-
-	//setup units
-	//Unit* pUnit = mpUnitManager->createPlayerUnit(*pArrowSprite);
-	//pUnit->setShowTarget(true);
-	//pUnit->setSteering(Steering::ARRIVE_AND_FACE, ZERO_VECTOR2D);
-
 	mpInputManager = new InputManager();
 	mpInputManager->init();
 
@@ -251,25 +245,26 @@ void Game::processLoop()
 {
 	mpUnitManager->updateAll(TARGET_ELAPSED_MS);
 	mpComponentManager->update(TARGET_ELAPSED_MS);
-	
-	//draw background
-	Sprite* pBackgroundSprite = mpSpriteManager->getSprite( BACKGROUND_SPRITE_ID );
-	mpGraphicsSystem->draw(*(mpGraphicsSystem->getBackBuffer()), *pBackgroundSprite, 0.0f, 0.0f);
-
-	//draw units
-	mpUnitManager->drawAll();
 
 	mpMessageManager->processMessagesForThisframe();
 
-	//write text 
-	mpGraphicsSystem->drawText(*mpFont, 200, 10, BLACK_COLOR, "Hold down W for weight and R for radius");
-	mpGraphicsSystem->drawText(*mpFont, 250, 45, BLACK_COLOR, "Hold down 1- Separation, 2- Cohesion, 3- Alignment");
-	mpGraphicsSystem->drawText(*mpFont, 250, 80, BLACK_COLOR, "Press up/down arrow keys to adjust weight and radii");
+	//processInput();
+}
 
-	mpGraphicsSystem->drawText(*mpFont, 100, 700, BLACK_COLOR, "FPS: " + to_string(1000 / mFrameTime));
-	mpGraphicsSystem->drawText(*mpFont, 100, 720, BLACK_COLOR, "Boids on screen: " + to_string(UnitManager::mBoidsOnScreen));
+void Game:: render()
+{
+	Sprite* pBackgroundSprite = mpSpriteManager->getSprite(BACKGROUND_SPRITE_ID);
+	mpGraphicsSystem->draw(*(mpGraphicsSystem->getBackBuffer()), *pBackgroundSprite, 0.0f, 0.0f);
 
-	processInput();
+	mpGraphicsSystem->drawText(*mpFont, 200, 10, BLACK_COLOR, theState->GetHeaderMessage()[0]);
+	mpGraphicsSystem->drawText(*mpFont, 200, 30, BLACK_COLOR, theState->GetHeaderMessage()[1]);
+	mpGraphicsSystem->drawText(*mpFont, 200, 50, BLACK_COLOR, theState->GetHeaderMessage()[2]);
+	mpGraphicsSystem->drawText(*mpFont, 200, 70, BLACK_COLOR, theState->GetHeaderMessage()[3]);
+	mpGraphicsSystem->drawText(*mpFont, 200, 90, BLACK_COLOR, theState->GetHeaderMessage()[4]);
+	mpGraphicsSystem->drawText(*mpFont, 200, 110, BLACK_COLOR, theState->GetHeaderMessage()[5]);
+	mpGraphicsSystem->drawText(*mpFont, 200, 130, BLACK_COLOR, theState->GetHeaderMessage()[6]);
+
+	mpUnitManager->drawAll();
 	mpGraphicsSystem->swap();
 }
 
@@ -293,111 +288,82 @@ float genRandomFloat()
 
 void Game::processInput()
 {
-	mpInputManager->update();
-
-	//if (mpInputManager->getDown(InputManager::MouseCode::LEFT))//left mouse click
-	//{
-	//	Vector2D pos(mpInputManager->getMouseX(), mpInputManager->getMouseY());
-	//	GameMessage* pMessage = new PlayerMoveToMessage(pos);
-	//	MESSAGE_MANAGER->addMessage(pMessage, 0);
-	//}
-	
-	//if escape key was down then exit the loop
-	if (mpInputManager->getDown(InputManager::KeyCode::ESCAPE))
-	{
-		//message to exit the game
-		GameMessage* pMessage = new ExitGameMessage();
-		MESSAGE_MANAGER->addMessage(pMessage, 1);
-	}
-
-	if (mpInputManager->getPressed(InputManager::KeyCode::A))
-	{
-		//message to add a unit
-		GameMessage* pMessage = new AddUnitMessage();
-		MESSAGE_MANAGER->addMessage(pMessage, 2);
-	}
-
-	if (mpInputManager->getPressed(InputManager::KeyCode::D))
-	{
-		//message to delete a unit that is not the player
-		GameMessage* pMessage = new DeleteUnitMessage();
-		MESSAGE_MANAGER->addMessage(pMessage, 3);
-	}
+	//mpInputManager->update();
 
 	//SEPARATION
-	if (mpInputManager->getDown(InputManager::KeyCode::N1) && mpInputManager->getDown(InputManager::KeyCode::W) && mpInputManager->getPressed(InputManager::KeyCode::UP))
-	{
-		gpData->setSeparationWeight(.1);
-		cout << "Separation weight: " << gpData->getSeparationWeight() << endl;
-	}
+	//if (mpInputManager->getDown(InputManager::KeyCode::N1) && mpInputManager->getDown(InputManager::KeyCode::W) && mpInputManager->getPressed(InputManager::KeyCode::UP))
+	//{
+	//	gpData->setSeparationWeight(.1);
+	//	cout << "Separation weight: " << gpData->getSeparationWeight() << endl;
+	//}
 
-	if (mpInputManager->getDown(InputManager::KeyCode::N1) && mpInputManager->getDown(InputManager::KeyCode::R) && mpInputManager->getPressed(InputManager::KeyCode::UP))
-	{
-		gpData->setSeparationRadius(5);
-		cout << "Separation radius: " << gpData->getSeparationRadius() << endl;
-	}
+	//if (mpInputManager->getDown(InputManager::KeyCode::N1) && mpInputManager->getDown(InputManager::KeyCode::R) && mpInputManager->getPressed(InputManager::KeyCode::UP))
+	//{
+	//	gpData->setSeparationRadius(5);
+	//	cout << "Separation radius: " << gpData->getSeparationRadius() << endl;
+	//}
 
-	if (mpInputManager->getDown(InputManager::KeyCode::N1) && mpInputManager->getDown(InputManager::KeyCode::W) && mpInputManager->getPressed(InputManager::KeyCode::DOWN))
-	{
-		gpData->setSeparationWeight(-.1);
-		cout << "Separation weight: " << gpData->getSeparationWeight() << endl;
-	}
+	//if (mpInputManager->getDown(InputManager::KeyCode::N1) && mpInputManager->getDown(InputManager::KeyCode::W) && mpInputManager->getPressed(InputManager::KeyCode::DOWN))
+	//{
+	//	gpData->setSeparationWeight(-.1);
+	//	cout << "Separation weight: " << gpData->getSeparationWeight() << endl;
+	//}
 
-	if (mpInputManager->getDown(InputManager::KeyCode::N1) && mpInputManager->getDown(InputManager::KeyCode::R) && mpInputManager->getPressed(InputManager::KeyCode::DOWN))
-	{
-		gpData->setSeparationRadius(-5);
-		cout << "Separation radius: " << gpData->getSeparationRadius() << endl;
-	}
+	//if (mpInputManager->getDown(InputManager::KeyCode::N1) && mpInputManager->getDown(InputManager::KeyCode::R) && mpInputManager->getPressed(InputManager::KeyCode::DOWN))
+	//{
+	//	gpData->setSeparationRadius(-5);
+	//	cout << "Separation radius: " << gpData->getSeparationRadius() << endl;
+	//}
 
-	//COHESION
-	if (mpInputManager->getDown(InputManager::KeyCode::N2) && mpInputManager->getDown(InputManager::KeyCode::W) && mpInputManager->getPressed(InputManager::KeyCode::UP))
-	{
-		gpData->setCohesionWeight(.1);
-		cout << "Cohestion weight: " << gpData->getCohesionWeight() << endl;
-	}
+	////COHESION
+	//if (mpInputManager->getDown(InputManager::KeyCode::N2) && mpInputManager->getDown(InputManager::KeyCode::W) && mpInputManager->getPressed(InputManager::KeyCode::UP))
+	//{
+	//	gpData->setCohesionWeight(.1);
+	//	cout << "Cohestion weight: " << gpData->getCohesionWeight() << endl;
+	//}
 
-	if (mpInputManager->getDown(InputManager::KeyCode::N2) && mpInputManager->getDown(InputManager::KeyCode::R) && mpInputManager->getPressed(InputManager::KeyCode::UP))
-	{
-		gpData->setCohesionRadius(5);
-		cout << "Cohestion radius: " << gpData->getCohesionRadius() << endl;
-	}
+	//if (mpInputManager->getDown(InputManager::KeyCode::N2) && mpInputManager->getDown(InputManager::KeyCode::R) && mpInputManager->getPressed(InputManager::KeyCode::UP))
+	//{
+	//	gpData->setCohesionRadius(5);
+	//	cout << "Cohestion radius: " << gpData->getCohesionRadius() << endl;
+	//}
 
-	if (mpInputManager->getDown(InputManager::KeyCode::N2) && mpInputManager->getDown(InputManager::KeyCode::W) && mpInputManager->getPressed(InputManager::KeyCode::DOWN))
-	{
-		gpData->setCohesionWeight(-.1);
-		cout << "Cohestion weight: " << gpData->getCohesionWeight() << endl;
-	}
+	//if (mpInputManager->getDown(InputManager::KeyCode::N2) && mpInputManager->getDown(InputManager::KeyCode::W) && mpInputManager->getPressed(InputManager::KeyCode::DOWN))
+	//{
+	//	gpData->setCohesionWeight(-.1);
+	//	cout << "Cohestion weight: " << gpData->getCohesionWeight() << endl;
+	//}
 
-	if (mpInputManager->getDown(InputManager::KeyCode::N2) && mpInputManager->getDown(InputManager::KeyCode::R) && mpInputManager->getPressed(InputManager::KeyCode::DOWN))
-	{
-		gpData->setCohesionRadius(-5);
-		cout << "Cohestion radius: " << gpData->getCohesionRadius() << endl;
-	}
+	//if (mpInputManager->getDown(InputManager::KeyCode::N2) && mpInputManager->getDown(InputManager::KeyCode::R) && mpInputManager->getPressed(InputManager::KeyCode::DOWN))
+	//{
+	//	gpData->setCohesionRadius(-5);
+	//	cout << "Cohestion radius: " << gpData->getCohesionRadius() << endl;
+	//}
 
-	//ALIGHNMENT
-	if (mpInputManager->getDown(InputManager::KeyCode::N3) && mpInputManager->getDown(InputManager::KeyCode::W) && mpInputManager->getPressed(InputManager::KeyCode::UP))
-	{
-		gpData->setAlignWeight(.1);
-		cout << "Aligh weight: " << gpData->getAlighnWeight() << endl;
-	}
+	////ALIGHNMENT
+	//if (mpInputManager->getDown(InputManager::KeyCode::N3) && mpInputManager->getDown(InputManager::KeyCode::W) && mpInputManager->getPressed(InputManager::KeyCode::UP))
+	//{
+	//	gpData->setAlignWeight(.1);
+	//	cout << "Aligh weight: " << gpData->getAlighnWeight() << endl;
+	//}
 
-	if (mpInputManager->getDown(InputManager::KeyCode::N3) && mpInputManager->getDown(InputManager::KeyCode::R) && mpInputManager->getPressed(InputManager::KeyCode::UP))
-	{
-		gpData->setAlignRadius(5);
-		cout << "Aligh radius: " << gpData->getAlignRadius() << endl;
-	}
+	//if (mpInputManager->getDown(InputManager::KeyCode::N3) && mpInputManager->getDown(InputManager::KeyCode::R) && mpInputManager->getPressed(InputManager::KeyCode::UP))
+	//{
+	//	gpData->setAlignRadius(5);
+	//	cout << "Aligh radius: " << gpData->getAlignRadius() << endl;
+	//}
 
-	if (mpInputManager->getDown(InputManager::KeyCode::N3) && mpInputManager->getDown(InputManager::KeyCode::W) && mpInputManager->getPressed(InputManager::KeyCode::DOWN))
-	{
-		gpData->setAlignWeight(-.1);
-		cout << "Aligh weight: " << gpData->getAlighnWeight() << endl;
-	}
+	//if (mpInputManager->getDown(InputManager::KeyCode::N3) && mpInputManager->getDown(InputManager::KeyCode::W) && mpInputManager->getPressed(InputManager::KeyCode::DOWN))
+	//{
+	//	gpData->setAlignWeight(-.1);
+	//	cout << "Aligh weight: " << gpData->getAlighnWeight() << endl;
+	//}
 
-	if (mpInputManager->getDown(InputManager::KeyCode::N3) && mpInputManager->getDown(InputManager::KeyCode::R) && mpInputManager->getPressed(InputManager::KeyCode::DOWN))
-	{
-		gpData->setAlignRadius(-5);
-		cout << "Aligh radius: " << gpData->getAlignRadius() << endl;
-	}
+	//if (mpInputManager->getDown(InputManager::KeyCode::N3) && mpInputManager->getDown(InputManager::KeyCode::R) && mpInputManager->getPressed(InputManager::KeyCode::DOWN))
+	//{
+	//	gpData->setAlignRadius(-5);
+	//	cout << "Aligh radius: " << gpData->getAlignRadius() << endl;
+	//}
 
 }
 

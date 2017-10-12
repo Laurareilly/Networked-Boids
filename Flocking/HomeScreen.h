@@ -24,9 +24,18 @@ public:
 
 	bool isServer;
 
+	std::string* GetHeaderMessage() { return data->headerMessage; }
+
 	virtual void OnArriveFromPrevious(ApplicationState *passData)
 	{
-		data->headerMessage = "Welcome 2 boidsz\nChoose Option\n1: Local Boids\n2: Join Networked Boids\n3: Create Networked Boids (Data Push)\n4: Create Networked Boids (Data Share)\n5: Create Networked Boids (Data Couple)\n6: Quit\n";
+		data->headerMessage[0] = "Welcome 2 boids! Choose Option:";
+		data->headerMessage[1] = " 1: Local Boids";
+		data->headerMessage[2] = " 2: Join Networked Boids";
+		data->headerMessage[3] = " 3: Create Networked Boids (Data Push)";
+		data->headerMessage[4] = " 4: Create Networked Boids (Data Share)";
+		data->headerMessage[5] = " 5: Create Networked Boids (Data Couple)";
+		data->headerMessage[6] = " 6: Quit";
+			
 		data->clientID = 0;
 		data->ipAddress = passData->data->ipAddress;
 		data->isLocal = passData->data->isLocal;

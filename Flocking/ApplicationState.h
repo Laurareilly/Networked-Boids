@@ -26,6 +26,8 @@ public:
 	virtual int getIsLocal() = 0;
 	virtual void AcceptedToServer() = 0;
 
+	virtual std::string* GetHeaderMessage() = 0;
+
 	ApplicationState();
 	~ApplicationState();
 
@@ -37,7 +39,7 @@ protected:
 		//SystemAddress peerSystemAddress;
 		unsigned int isLocal = 1; //0 = networked
 		unsigned int clientID = 1;
-		std::string headerMessage;
+		std::string headerMessage[7];
 		char doesUpdateInput;
 		char doesUpdateNetworking;
 		char doesUpdateState;

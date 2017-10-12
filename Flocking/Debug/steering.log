@@ -1,24 +1,9 @@
-﻿  NetworkManager.cpp
-c:\users\laura reilly\desktop\networkedboids\flocking\networkmanager.cpp(12): warning C4309: '=': truncation of constant value
-  HomeScreen.cpp
+﻿  HomeScreen.cpp
   Generating Code...
   Compiling...
-  ApplicationState.cpp
+  main.cpp
+  Game.cpp
   ActiveGameState.cpp
   Generating Code...
-RakNet.lib(GetTime.obj) : warning LNK4099: PDB 'RakNet.pdb' was not found with 'RakNet.lib(GetTime.obj)' or at 'C:\Users\Laura Reilly\Desktop\networkedboids\Flocking\Debug\RakNet.pdb'; linking object as if no debug info
-RakNet.lib(Itoa.obj) : warning LNK4099: PDB 'RakNet.pdb' was not found with 'RakNet.lib(Itoa.obj)' or at 'C:\Users\Laura Reilly\Desktop\networkedboids\Flocking\Debug\RakNet.pdb'; linking object as if no debug info
-RakNet.lib(LocklessTypes.obj) : warning LNK4099: PDB 'RakNet.pdb' was not found with 'RakNet.lib(LocklessTypes.obj)' or at 'C:\Users\Laura Reilly\Desktop\networkedboids\Flocking\Debug\RakNet.pdb'; linking object as if no debug info
-RakNet.lib(RakNetSocket2.obj) : warning LNK4099: PDB 'RakNet.pdb' was not found with 'RakNet.lib(RakNetSocket2.obj)' or at 'C:\Users\Laura Reilly\Desktop\networkedboids\Flocking\Debug\RakNet.pdb'; linking object as if no debug info
-RakNet.lib(RakNetTypes.obj) : warning LNK4099: PDB 'RakNet.pdb' was not found with 'RakNet.lib(RakNetTypes.obj)' or at 'C:\Users\Laura Reilly\Desktop\networkedboids\Flocking\Debug\RakNet.pdb'; linking object as if no debug info
-RakNet.lib(RakSleep.obj) : warning LNK4099: PDB 'RakNet.pdb' was not found with 'RakNet.lib(RakSleep.obj)' or at 'C:\Users\Laura Reilly\Desktop\networkedboids\Flocking\Debug\RakNet.pdb'; linking object as if no debug info
-RakNet.lib(RakThread.obj) : warning LNK4099: PDB 'RakNet.pdb' was not found with 'RakNet.lib(RakThread.obj)' or at 'C:\Users\Laura Reilly\Desktop\networkedboids\Flocking\Debug\RakNet.pdb'; linking object as if no debug info
-RakNet.lib(SuperFastHash.obj) : warning LNK4099: PDB 'RakNet.pdb' was not found with 'RakNet.lib(SuperFastHash.obj)' or at 'C:\Users\Laura Reilly\Desktop\networkedboids\Flocking\Debug\RakNet.pdb'; linking object as if no debug info
-DeanLibDebug.lib(MemoryPool.obj) : warning LNK4099: PDB 'DeanLib.pdb' was not found with 'DeanLibDebug.lib(MemoryPool.obj)' or at 'C:\Users\Laura Reilly\Desktop\networkedboids\Flocking\Debug\DeanLib.pdb'; linking object as if no debug info
-DeanLibDebug.lib(MemoryTracker.obj) : warning LNK4099: PDB 'DeanLib.pdb' was not found with 'DeanLibDebug.lib(MemoryTracker.obj)' or at 'C:\Users\Laura Reilly\Desktop\networkedboids\Flocking\Debug\DeanLib.pdb'; linking object as if no debug info
-DeanLibDebug.lib(PerformanceTracker.obj) : warning LNK4099: PDB 'DeanLib.pdb' was not found with 'DeanLibDebug.lib(PerformanceTracker.obj)' or at 'C:\Users\Laura Reilly\Desktop\networkedboids\Flocking\Debug\DeanLib.pdb'; linking object as if no debug info
-DeanLibDebug.lib(Timer.obj) : warning LNK4099: PDB 'DeanLib.pdb' was not found with 'DeanLibDebug.lib(Timer.obj)' or at 'C:\Users\Laura Reilly\Desktop\networkedboids\Flocking\Debug\DeanLib.pdb'; linking object as if no debug info
-DeanLibDebug.lib(Trackable.obj) : warning LNK4099: PDB 'DeanLib.pdb' was not found with 'DeanLibDebug.lib(Trackable.obj)' or at 'C:\Users\Laura Reilly\Desktop\networkedboids\Flocking\Debug\DeanLib.pdb'; linking object as if no debug info
-DeanLibDebug.lib(Vector2D.obj) : warning LNK4099: PDB 'DeanLib.pdb' was not found with 'DeanLibDebug.lib(Vector2D.obj)' or at 'C:\Users\Laura Reilly\Desktop\networkedboids\Flocking\Debug\DeanLib.pdb'; linking object as if no debug info
-  steering.vcxproj -> C:\Users\Laura Reilly\Desktop\networkedboids\Flocking\Debug\steering.exe
-  steering.vcxproj -> C:\Users\Laura Reilly\Desktop\networkedboids\Flocking\Debug\steering.pdb (Full PDB)
+  steering.vcxproj -> C:\Users\laura.reilly\Desktop\real networked boids\Flocking\Debug\steering.exe
+  steering.vcxproj -> C:\Users\laura.reilly\Desktop\real networked boids\Flocking\Debug\steering.pdb (Full PDB)

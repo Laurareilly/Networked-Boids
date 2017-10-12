@@ -40,6 +40,11 @@
 #include "PositionComponent.h"
 #include "PhysicsComponent.h"
 
+#include "ApplicationState.h"
+#include "HomeScreen.h"
+#include "ActiveGameState.h"
+
+
 using namespace std;
 
 //test callback
@@ -86,7 +91,11 @@ int main(int argc, char **argv)
 		gpPerformanceTracker->clearTracker("draw");
 		gpPerformanceTracker->startTracking("draw");
 
-		gpGame->processLoop();
+		gpGame->theState->UpdateInput();
+		gpGame->theState->UpdateNetworking();
+		gpGame->theState->UpdateState();
+		gpGame->theState->Display();
+		//gpGame->processLoop();
 
 		gpPerformanceTracker->stopTracking("draw");
 
@@ -96,10 +105,6 @@ int main(int argc, char **argv)
 
 		gpGame->updateTime(fps.getElapsedTime());
 		fps.stop();
-
-		//cout << "loop took:" << gpPerformanceTracker->getElapsedTime("loop") << "ms";
-		//cout << "draw took:" << gpPerformanceTracker->getElapsedTime("draw") << "ms\n";
-
 	}
 
 	gpGame->cleanup();

@@ -47,6 +47,7 @@ public:
 	bool endLoop();
 	void exitGame();
 	void updateTime(double time);
+	void render();
 
 	inline GraphicsSystem* getGraphicsSystem() const { return mpGraphicsSystem; };
 	inline GraphicsBufferManager* getGraphicsBufferManager() const { return mpGraphicsBufferManager; };

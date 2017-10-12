@@ -7,7 +7,13 @@
 
 ActiveGameState::ActiveGameState()
 {
-	data->headerMessage = "";
+	data->headerMessage[0] = "";
+	data->headerMessage[1] = "";
+	data->headerMessage[2] = "";
+	data->headerMessage[3] = "";
+	data->headerMessage[4] = "";
+	data->headerMessage[5] = "";
+	data->headerMessage[6] = "";
 	data->doesSendData = 0;
 	data->doesDisplay = 1;
 	data->doesUpdateInput = 1;

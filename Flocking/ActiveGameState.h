@@ -23,11 +23,20 @@ public:
 	virtual void SendBoidData() {};
 	virtual void AcceptedToServer() {};
 
+	virtual std::string* GetHeaderMessage() { return data->headerMessage; };
+
 	bool isServer;
 
 	virtual void OnArriveFromPrevious(ApplicationState *passData)
 	{
-		data->headerMessage = "";
+		data->headerMessage[0] = "";
+		data->headerMessage[1] = "";
+		data->headerMessage[2] = "";
+		data->headerMessage[3] = "";
+		data->headerMessage[4] = "";
+		data->headerMessage[5] = "";
+		data->headerMessage[6] = "";
+
 		data->clientID = 0;
 		data->ipAddress = passData->data->ipAddress;
 		data->isLocal = passData->data->isLocal;
