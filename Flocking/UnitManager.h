@@ -38,6 +38,7 @@ public:
 	void drawAll() const;
 	void updateAll(float elapsedTime);
 	void updateAll(bool shouldDelete);
+	void cleanupBoids();
 
 	Unit* getPlayerUnit() const { return getUnit(PLAYER_UNIT_ID); };
 

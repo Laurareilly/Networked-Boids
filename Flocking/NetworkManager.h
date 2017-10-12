@@ -1,7 +1,7 @@
 #pragma once
 
 /*
-Lab 2
+Project 2- Networked Boids
 EGP 405-02
 Laura Reilly -- 0972157
 Robert Mitchell -- 0935286
@@ -29,13 +29,13 @@ class Unit;
 class NetworkManager
 {
 public:
-	NetworkManager() {};
-	~NetworkManager() {};
+	NetworkManager();
+	~NetworkManager();
 
 	void initializeNetwork() {};
 
-	bool initServer(int cPort) { return 1; };
-	void initClient(int cPort, char* cIP) {};
+	void initServer(int cPort);
+	void initClient(int cPort, char* cIP);
 	void Update();
 	void ShutdownServer() {};
 
@@ -61,24 +61,24 @@ public:
 	{
 		ID_GAME_MESSAGES = ID_USER_PACKET_ENUM + 1,       //ID_USER_PACKET_ENUM,
 
-														  //handshake exchange
-														  ID_USERNAME,				//client responds to connection by sending it's username to server
-														  ID_NEW_CLIENT_JOIN,			//server broadcasts welcome message to all clients
-														  ID_CLIENT_NUMBER,			//server associates username with client number
+		//handshake exchange
+		ID_USERNAME,				//client responds to connection by sending it's username to server
+		ID_NEW_CLIENT_JOIN,			//server broadcasts welcome message to all clients
+		ID_CLIENT_NUMBER,			//server associates username with client number
 
-																					//message exchange
-																					ID_CHAT_MESSAGE,			//send by anyone
+		//message exchange
+		ID_CHAT_MESSAGE,			//send by anyone
 
-																												//misc.
-																												ID_SEND_ALL,				//sent by client
-
-																												ID_CLIENT_TO_SERVER,		//Clients exclusively send this, but will never receive and interpret it
-																												ID_RECEIVE_MESSAGE,			//Server received ID_CtS, and determined that the message isn't a DM. This is then sent by server, and interpreted by clients
-																												ID_RECEIVE_DIRECT_MESSAGE,	//Server received ID_CtS, and determined it was a DM. This is sent back to the sender, and is sent to the recipient of the DM (PURPLE)
-																												ID_SERVER_MESSAGE,			//Sent by Server, received by Clients, displayed in all red
-																												ID_PEER_LEAVE,				//Sent by EITHER ***PEER*** when they go to the lobby or press SHIFT ESC
-
-																												ID_BOID_DATA
+		//misc.
+		ID_SEND_ALL,				//sent by client
+		
+		ID_CLIENT_TO_SERVER,		//Clients exclusively send this, but will never receive and interpret it
+		ID_RECEIVE_MESSAGE,			//Server received ID_CtS, and determined that the message isn't a DM. This is then sent by server, and interpreted by clients
+		ID_RECEIVE_DIRECT_MESSAGE,	//Server received ID_CtS, and determined it was a DM. This is sent back to the sender, and is sent to the recipient of the DM (PURPLE)
+		ID_SERVER_MESSAGE,			//Sent by Server, received by Clients, displayed in all red
+		ID_PEER_LEAVE,				//Sent by EITHER ***PEER*** when they go to the lobby or press SHIFT ESC
+		
+		ID_BOID_DATA
 	};
 
 	enum RoomState

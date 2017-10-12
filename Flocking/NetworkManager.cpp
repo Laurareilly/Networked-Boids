@@ -4,6 +4,8 @@
 #include "Sprite.h"
 #include "SpriteManager.h"
 #include "GraphicsSystem.h"
+#include "ApplicationState.h"
+
 
 void NetworkManager::SendBoidData(Unit *units[30]) //take in list of boids as param
 {
@@ -62,6 +64,44 @@ unsigned int NetworkManager::Read(char * buffer)
 	return totalData;
 }
 
+NetworkManager::NetworkManager()
+{
+	mpPeer = RakPeerInterface::GetInstance();
+}
+
+NetworkManager::~NetworkManager()
+{
+	RakPeerInterface::DestroyInstance(mpPeer);
+}
+
+void NetworkManager::initServer(int cPort)
+{
+	maxClients = 1;
+	serverPort = cPort;
+	sd = new SocketDescriptor(serverPort, 0);
+	mpPeer->SetMaximumIncomingConnections(maxClients);
+	mpPeer->SetTimeoutTime(1000, RakNet::UNASSIGNED_SYSTEM_ADDRESS);
+	mpPeer->SetOccasionalPing(true);
+	mpPeer->SetUnreliableTimeout(1000);
+	mpPeer->Startup(maxClients, sd, 1);
+}
+
+void NetworkManager::initClient(int cPort, char * cIP)
+{
+	mIsServer = false;
+	sd = new SocketDescriptor;
+	mpPeer->Startup(1, sd, 1);
+	mpPeer->SetOccasionalPing(true);
+
+	if (!mpPeer)
+	{
+		printf("Peer does not exist");
+	}
+
+	serverPort = cPort;
+	mpPeer->Connect(cIP, serverPort, 0, 0);
+}
+
 void NetworkManager::Update()
 {
 	for (mpPacket = mpPeer->Receive(); mpPacket; mpPeer->DeallocatePacket(mpPacket), mpPacket = mpPeer->Receive())
@@ -69,8 +109,12 @@ void NetworkManager::Update()
 		switch (mpPacket->data[0])
 		{
 		case ID_REMOTE_DISCONNECTION_NOTIFICATION:
+			gpGame->theState->ForcePlayerToLobby();
+			mpPeer->CloseConnection(mpPacket->systemAddress, true);
 			break;
 		case ID_REMOTE_CONNECTION_LOST:
+			gpGame->theState->ForcePlayerToLobby();
+			mpPeer->CloseConnection(mpPacket->systemAddress, true);
 			break;
 		case ID_REMOTE_NEW_INCOMING_CONNECTION:
 			//printf("Another client has connected.\n");
@@ -82,6 +126,7 @@ void NetworkManager::Update()
 			break;
 		case ID_CONNECTION_REQUEST_ACCEPTED: //the client receives this
 			printf("Our connection request has been accepted.\n");
+			gpGame->theState->AcceptedToServer();
 			break;
 		case ID_CLIENT_NUMBER:
 			break;
@@ -91,10 +136,16 @@ void NetworkManager::Update()
 			printf("The server is full.\n");
 			break;
 		case ID_DISCONNECTION_NOTIFICATION:
+			printf("Disconnection");
+			gpGame->theState->ForcePlayerToLobby();
+			mpPeer->CloseConnection(mpPacket->systemAddress, true);
 			break;
 		case ID_CONNECTION_LOST:
+			gpGame->theState->ForcePlayerToLobby();
 			break;
 		case ID_PEER_LEAVE:
+			gpGame->theState->ForcePlayerToLobby();
+			mpPeer->CloseConnection(mpPacket->systemAddress, true);
 			break;
 		case ID_BOID_DATA:
 		{

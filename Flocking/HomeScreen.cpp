@@ -34,6 +34,7 @@ void HomeScreen::UpdateState()
 	if (data->enterServer)
 	{
 		data->enterServer = false;
+		waitFrames = 30;
 		GoToNextState(this);
 	}
 
@@ -67,6 +68,7 @@ void HomeScreen::UpdateState()
 		case 2:
 			mpNetworkManager->initClient(data->portNumber, data->ipAddress);
 			data->isLocal = 0;
+			data->doesUpdateNetworking = 1;
 			tryingToConnect = true;
 			break;
 		case 3:
@@ -74,18 +76,27 @@ void HomeScreen::UpdateState()
 			data->isLocal = 0;
 			tryingToConnect = true;
 			wantsToBeSever = true;
+
+			//data sharing enum = something
+			GoToNextState(this);
 			break;
 		case 4:
 			mpNetworkManager->initServer(data->portNumber);
 			data->isLocal = 0;
 			tryingToConnect = true;
 			wantsToBeSever = true;
+
+			//data sharing enum = something
+			GoToNextState(this);
 			break;
 		case 5:
 			mpNetworkManager->initServer(data->portNumber);
 			data->isLocal = 0;
 			tryingToConnect = true;
 			wantsToBeSever = true;
+
+			GoToNextState(this);
+			//data sharing enum = something
 			break;
 		case 6:
 			gpGame->exitGame();

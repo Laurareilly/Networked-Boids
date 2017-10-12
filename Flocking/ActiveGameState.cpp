@@ -95,6 +95,9 @@ void ActiveGameState::ForcePlayerToLobby()
 		//cleanup networked boid array- delete all pointers
 		//send packet that says we left
 	}
+
+	gpGame->getUnitManager()->cleanupBoids();
+
 	GoToNextState(this);
 }
 

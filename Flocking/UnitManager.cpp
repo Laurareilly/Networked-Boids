@@ -153,11 +153,20 @@ void UnitManager::deleteRandomUnit()
 
 void UnitManager::deleteIfShouldBeDeleted()
 {
-	for (auto it = mUnitMap.rbegin(); it != mUnitMap.rend(); ++it)
+	//clean networked array?
+
+	bool running = true;
+	while (running)
 	{
-		if (it->second->getShouldBeDeleted())
+		running = false;
+		for (auto it = mUnitMap.rbegin(); it != mUnitMap.rend(); ++it)
 		{
-			deleteUnit(it->first);
+			if (it->second->getShouldBeDeleted())
+			{
+				deleteUnit(it->first);
+				running = true;
+				break;
+			}
 		}
 	}
 }
@@ -190,4 +199,10 @@ void UnitManager::updateAll(bool shouldDelete)
 	{
 		it->second->setShouldBeDeleted(shouldDelete);
 	}
+}
+
+void UnitManager::cleanupBoids()
+{
+	updateAll(true); //this is really good (DELIGHTER)
+	deleteIfShouldBeDeleted();
 }
