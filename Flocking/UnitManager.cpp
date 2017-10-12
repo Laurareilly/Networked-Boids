@@ -206,3 +206,18 @@ void UnitManager::cleanupBoids()
 	updateAll(true); //this is really good (DELIGHTER)
 	deleteIfShouldBeDeleted();
 }
+
+Unit** UnitManager::getUnitArray()
+{
+	Unit** tempUnitArray = new Unit*[30];
+
+	int index = 0;
+	for (auto it = mUnitMap.begin(); it != mUnitMap.end(); ++it)
+	{
+		tempUnitArray[index] = it->second;
+		index++;
+
+		if (index == 30) break;
+	}
+	return tempUnitArray;
+}

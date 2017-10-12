@@ -77,6 +77,11 @@ void ActiveGameState::UpdateInput()
 
 void ActiveGameState::UpdateNetworking()
 {
+	//send boid data
+	mpNetworkManager->SendBoidData(gpGame->getUnitManager()->getUnitArray());
+
+	//update
+	mpNetworkManager->Update();
 }
 
 void ActiveGameState::Display()

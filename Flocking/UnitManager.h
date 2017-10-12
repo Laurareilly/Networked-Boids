@@ -44,6 +44,7 @@ public:
 
 	static int mBoidsOnScreen;
 
+	Unit** getUnitArray();
 
 
 
