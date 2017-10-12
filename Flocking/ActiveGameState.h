@@ -13,7 +13,7 @@ public:
 	virtual void UpdateNetworking();
 	virtual void Display();
 
-	virtual void ForcePlayerToLobby() {};
+	virtual void ForcePlayerToLobby();
 	virtual int getIsLocal() { return data->isLocal; }
 	virtual void SetClientID(int cID) {};
 
@@ -42,9 +42,9 @@ public:
 		data->isLocal = passData->data->isLocal;
 		data->portNumber = passData->data->portNumber;
 		data->doesDisplay = 1;
-		data->doesUpdateInput = 1;
+		data->doesUpdateInput = 0;
 		data->doesUpdateState = 1;
-		data->doesUpdateNetworking = 1;
+		data->doesUpdateNetworking = !data->isLocal;
 		data->doesSendData = 0;
 	}
 
@@ -55,5 +55,7 @@ private:
 	bool wantsToBeSever = false;
 	bool successfullyConnectedToServer = false;
 	int waitFrames = 30;
-
+	bool escapePressed;
+	bool addButtonPressed;
+	bool deleteButtonPressed;
 };

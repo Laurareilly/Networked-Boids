@@ -1,9 +1,3 @@
-﻿  HomeScreen.cpp
-  Generating Code...
-  Compiling...
-  main.cpp
-  Game.cpp
-  ActiveGameState.cpp
-  Generating Code...
+﻿  UnitManager.cpp
   steering.vcxproj -> C:\Users\laura.reilly\Desktop\real networked boids\Flocking\Debug\steering.exe
   steering.vcxproj -> C:\Users\laura.reilly\Desktop\real networked boids\Flocking\Debug\steering.pdb (Full PDB)

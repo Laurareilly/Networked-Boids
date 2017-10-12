@@ -20,7 +20,7 @@ HomeScreen::HomeScreen()
 	data->doesDisplay = 1;
 	data->doesUpdateInput = 1;
 	data->doesUpdateState = 1;
-	data->doesUpdateNetworking = 1;
+	data->doesUpdateNetworking = 0;
 }
 
 void HomeScreen::UpdateState()
@@ -93,11 +93,14 @@ void HomeScreen::UpdateState()
 		default:
 			break;
 		}
+
+		selectedOptionIndex = 0;
 	}
 }
 
 void HomeScreen::UpdateInput()
 {
+	gpGame->getInputManager()->update();
 	if (gpGame->getInputManager()->getPressed(InputManager::KeyCode::N1))
 	{
 		selectedOptionIndex = 1;
@@ -122,11 +125,19 @@ void HomeScreen::UpdateInput()
 	{
 		selectedOptionIndex = 6;
 	}
+
+	if (gpGame->getInputManager()->getPressed(InputManager::KeyCode::ESCAPE))
+	{
+		gpGame->exitGame();
+	}
 }
 
 void HomeScreen::UpdateNetworking()
 {
+	if (!data->doesUpdateNetworking)
+		return;
 
+	mpNetworkManager->Update();
 }
 
 void HomeScreen::Display()

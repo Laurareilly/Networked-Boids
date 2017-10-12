@@ -122,7 +122,7 @@ bool Game::init()
 	}
 
 	//actually load the font
-	mpFont = new Font( "font.ttf", 20 );
+	mpFont = new Font( "font.ttf", 40 );
 	if( mpFont == NULL )
 	{
 		printf( "ttf font file not loaded properly!\n" ); 
@@ -256,13 +256,13 @@ void Game:: render()
 	Sprite* pBackgroundSprite = mpSpriteManager->getSprite(BACKGROUND_SPRITE_ID);
 	mpGraphicsSystem->draw(*(mpGraphicsSystem->getBackBuffer()), *pBackgroundSprite, 0.0f, 0.0f);
 
-	mpGraphicsSystem->drawText(*mpFont, 200, 10, BLACK_COLOR, theState->GetHeaderMessage()[0]);
-	mpGraphicsSystem->drawText(*mpFont, 200, 30, BLACK_COLOR, theState->GetHeaderMessage()[1]);
-	mpGraphicsSystem->drawText(*mpFont, 200, 50, BLACK_COLOR, theState->GetHeaderMessage()[2]);
-	mpGraphicsSystem->drawText(*mpFont, 200, 70, BLACK_COLOR, theState->GetHeaderMessage()[3]);
-	mpGraphicsSystem->drawText(*mpFont, 200, 90, BLACK_COLOR, theState->GetHeaderMessage()[4]);
-	mpGraphicsSystem->drawText(*mpFont, 200, 110, BLACK_COLOR, theState->GetHeaderMessage()[5]);
-	mpGraphicsSystem->drawText(*mpFont, 200, 130, BLACK_COLOR, theState->GetHeaderMessage()[6]);
+	mpGraphicsSystem->drawText(*mpFont, 500, 10, BLACK_COLOR, theState->GetHeaderMessage()[0]);
+	mpGraphicsSystem->drawText(*mpFont, 500, 50, BLACK_COLOR, theState->GetHeaderMessage()[1]);
+	mpGraphicsSystem->drawText(*mpFont, 500, 100, BLACK_COLOR, theState->GetHeaderMessage()[2]);
+	mpGraphicsSystem->drawText(*mpFont, 500, 150, BLACK_COLOR, theState->GetHeaderMessage()[3]);
+	mpGraphicsSystem->drawText(*mpFont, 500, 200, BLACK_COLOR, theState->GetHeaderMessage()[4]);
+	mpGraphicsSystem->drawText(*mpFont, 500, 250, BLACK_COLOR, theState->GetHeaderMessage()[5]);
+	mpGraphicsSystem->drawText(*mpFont, 500, 300, BLACK_COLOR, theState->GetHeaderMessage()[6]);
 
 	mpUnitManager->drawAll();
 	mpGraphicsSystem->swap();

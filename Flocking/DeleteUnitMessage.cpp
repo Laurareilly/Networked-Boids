@@ -24,5 +24,6 @@ void DeleteUnitMessage::process()
 	//delete unit here
 	UnitManager::mBoidsOnScreen--;
 	gpGame->getUnitManager()->deleteRandomUnit();
+	//gpGame->getUnitManager()->deleteUnit(UnitManager::mBoidsOnScreen);  //deleteRandomUnit();
 }
 

@@ -4,6 +4,10 @@
 #include "HomeScreen.h"
 #include "ApplicationState.h"
 #include "NetworkManager.h"
+#include "InputManager.h"
+#include "GameMessageManager.h"	
+#include "AddUnitMessage.h"
+#include "DeleteUnitMessage.h"
 
 ActiveGameState::ActiveGameState()
 {
@@ -19,14 +23,56 @@ ActiveGameState::ActiveGameState()
 	data->doesUpdateInput = 1;
 	data->doesUpdateState = 1;
 	data->doesUpdateNetworking = 1;
+	addButtonPressed = deleteButtonPressed = escapePressed = false;
 }
 
 void ActiveGameState::UpdateState()
 {
+	gpGame->processLoop();
+
+	if (escapePressed)
+	{
+		ForcePlayerToLobby();
+	}
+
+	if (addButtonPressed)
+	{
+		GameMessage* pMessage = new AddUnitMessage();
+		MESSAGE_MANAGER->addMessage(pMessage, 0);
+	}
+	
+	if (deleteButtonPressed)
+	{
+		GameMessage* pMessage = new DeleteUnitMessage();
+		MESSAGE_MANAGER->addMessage(pMessage, 0);
+	}
+
+	addButtonPressed = deleteButtonPressed = escapePressed = false;
 }
 
 void ActiveGameState::UpdateInput()
 {
+	if (!data->doesUpdateInput)
+	{
+		//if push and client return before setting it to 1
+		data->doesUpdateInput = 1;
+		return;
+	}
+	gpGame->getInputManager()->update();
+	if (gpGame->getInputManager()->getPressed(InputManager::KeyCode::A))
+	{
+		//add boid
+		addButtonPressed = true;
+	}
+	if (gpGame->getInputManager()->getPressed(InputManager::KeyCode::D))
+	{
+		//add boid
+		deleteButtonPressed = true;
+	}
+	if (gpGame->getInputManager()->getPressed(InputManager::KeyCode::ESCAPE))
+	{
+		escapePressed = true;
+	}
 }
 
 void ActiveGameState::UpdateNetworking()
@@ -35,6 +81,21 @@ void ActiveGameState::UpdateNetworking()
 
 void ActiveGameState::Display()
 {
+	gpGame->render();
+}
+
+void ActiveGameState::ForcePlayerToLobby()
+{
+	if (!data->isLocal)
+	{
+		//make a cleanup boids function that clears all the units (unit manager)
+		// for every boid in list
+		//  ->should be deleted = true
+		// deleteIfShouldBeDeleted
+		//cleanup networked boid array- delete all pointers
+		//send packet that says we left
+	}
+	GoToNextState(this);
 }
 
 void ActiveGameState::GoToNextState(ApplicationState * passData)

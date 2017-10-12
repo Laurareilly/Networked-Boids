@@ -128,22 +128,23 @@ void UnitManager::deleteUnit(const UnitID& id)
 
 void UnitManager::deleteRandomUnit()
 {
-	Uint32 target = rand() % mUnitMap.size();
-	Uint32 cnt = 0;
-
-	if (mUnitMap.size() <= 1) //make sure we dont try to delete any enemies if there aren't any
+	if (mUnitMap.size() < 1) //make sure we dont try to delete any enemies if there aren't any
 	{
 		return;
 	}
+
+	Uint32 target = rand() % mUnitMap.size();
+	Uint32 cnt = 0;
+
 	for (auto it = mUnitMap.begin(); it != mUnitMap.end(); ++it, cnt++)
 	{
 		if (cnt == target)
 		{
-			if (it->first == PLAYER_UNIT_ID) //skip over the player unit
-			{
-				deleteRandomUnit();
-				return;
-			}
+			//if (it->first == PLAYER_UNIT_ID) //skip over the player unit
+			//{
+			//	deleteRandomUnit();
+			//	return;
+			//}
 			deleteUnit(it->first);
 			break;
 		}
