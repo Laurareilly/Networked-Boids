@@ -6,8 +6,7 @@
 #include "GraphicsSystem.h"
 #include "ApplicationState.h"
 
-
-void NetworkManager::SendBoidData(Unit *units[30]) //take in list of boids as param
+void NetworkManager::SendBoidData(std::map<UnitID, Unit*> units) //(Unit *units[30]) //take in list of boids as param
 {
 	char sendBuff[2048];
 	unsigned int bytesWritten = 0;
@@ -15,19 +14,20 @@ void NetworkManager::SendBoidData(Unit *units[30]) //take in list of boids as pa
 	++bytesWritten;
 
 	//for loop go thorugh each boid 
-	for (unsigned int i = 0; i < 30; ++i)
+	//for (unsigned int i = 0; i < units.size(); ++i)
+	for(auto it = units.begin(); it != units.end(); ++it)
 	{
-		if (units[i] == nullptr)
+		if (it->second == nullptr)
 		{
 			break;
 		}
 
-		data[0].boidID = units[i]->getID();
-		data[0].posX = units[i]->getPositionComponent()->getPosition().getX();
-		data[0].posY = units[i]->getPositionComponent()->getPosition().getY();
-		data[0].rotation = units[i]->getPositionComponent()->getFacing();
-		data[0].velX = units[i]->getPhysicsComponent()->getVelocity().getX();
-		data[0].velY = units[i]->getPhysicsComponent()->getVelocity().getY();
+		data[0].boidID = it->second->getID();
+		data[0].posX = it->second->getPositionComponent()->getPosition().getX();
+		data[0].posY = it->second->getPositionComponent()->getPosition().getY();
+		data[0].rotation = it->second->getPositionComponent()->getFacing();
+		data[0].velX = it->second->getPhysicsComponent()->getVelocity().getX();
+		data[0].velY = it->second->getPhysicsComponent()->getVelocity().getY();
 
 		bytesWritten += Write(sendBuff + bytesWritten);
 	}

@@ -44,14 +44,16 @@ public:
 
 	static int mBoidsOnScreen;
 
-	Unit** getUnitArray();
+	//Unit** getUnitArray();
 
+	std::map<UnitID, Unit*> getReceivedUnits() { return mReceivedUnits; }
 
 
 private:
 	static UnitID msNextUnitID;
 	MemoryPool mPool;
 	std::map<UnitID, Unit*> mUnitMap;
-	Unit* mReceivedUnits[15]; //15 max boids for each player
+	std::map<UnitID, Unit*> mReceivedUnits;
+	//Unit* mReceivedUnits[15]; //15 max boids for each player
 };
 

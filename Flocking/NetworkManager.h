@@ -18,8 +18,9 @@ and/or communicate a copy of this project to a plagiarism
 #include "RakNet\RakNetTypes.h"
 #include "RakNet\MessageIdentifiers.h"
 #include "RakNet\RakPeerInterface.h"
-
+#include "UnitManager.h"
 #include <string>
+#include <map>
 
 using namespace RakNet;
 
@@ -42,7 +43,7 @@ public:
 	void SendNetworkedMessage(char* cMessage, int cSenderID) {};
 	void DisconnectFromPeers() {};
 
-	void SendBoidData(Unit *units[30]); //take in boid list as param
+	void SendBoidData(std::map<UnitID, Unit*> units); //take in boid list as param
 
 	unsigned int Write(char *buffer);
 	unsigned int Read(char *buffer);

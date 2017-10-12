@@ -178,9 +178,14 @@ void UnitManager::drawAll() const
 		it->second->draw();
 	}
 
-	for (unsigned int i = 0; i < 15; ++i)
+	//for (unsigned int i = 0; i < 15; ++i)
+	//{
+	//	if(mReceivedUnits[i] != NULL) mReceivedUnits[i]->draw();
+	//}
+
+	for (auto it = mReceivedUnits.begin(); it != mReceivedUnits.end(); ++it)
 	{
-		if(mReceivedUnits[i] != NULL) mReceivedUnits[i]->draw();
+		if (it->second != NULL) it->second->draw();
 	}
 }
 
@@ -207,17 +212,3 @@ void UnitManager::cleanupBoids()
 	deleteIfShouldBeDeleted();
 }
 
-Unit** UnitManager::getUnitArray()
-{
-	Unit** tempUnitArray = new Unit*[30];
-
-	int index = 0;
-	for (auto it = mUnitMap.begin(); it != mUnitMap.end(); ++it)
-	{
-		tempUnitArray[index] = it->second;
-		index++;
-
-		if (index == 30) break;
-	}
-	return tempUnitArray;
-}
