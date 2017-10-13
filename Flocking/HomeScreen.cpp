@@ -28,6 +28,7 @@ void HomeScreen::UpdateState()
 	if (data->doesUpdateState == 0)
 	{
 		data->doesUpdateState = 1;
+		selectedOptionIndex = 0;
 		return;
 	}
 
