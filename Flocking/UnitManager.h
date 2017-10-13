@@ -47,6 +47,7 @@ public:
 	//Unit** getUnitArray();
 
 	std::map<UnitID, Unit*> getReceivedUnits() { return mReceivedUnits; }
+	std::map<UnitID, Unit*> getLocalUnits() { return mUnitMap; }
 
 
 private:

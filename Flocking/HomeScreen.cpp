@@ -53,8 +53,7 @@ void HomeScreen::UpdateState()
 			{
 				waitFrames = 30;
 				tryingToConnect = false;
-
-				//latewr pass an error mesage that fails to connect
+				perror("Failed to connect");
 			}
 		}
 	}
@@ -78,7 +77,7 @@ void HomeScreen::UpdateState()
 			tryingToConnect = true;
 			wantsToBeSever = true;
 
-			//data sharing enum = something
+			mpNetworkManager->setCurrentDataMethod(DataMethod::DATA_PUSH);
 			GoToNextState(this);
 			break;
 		case 4:
@@ -87,7 +86,7 @@ void HomeScreen::UpdateState()
 			tryingToConnect = true;
 			wantsToBeSever = true;
 
-			//data sharing enum = something
+			mpNetworkManager->setCurrentDataMethod(DataMethod::DATA_SHARING);
 			GoToNextState(this);
 			break;
 		case 5:
@@ -96,8 +95,8 @@ void HomeScreen::UpdateState()
 			tryingToConnect = true;
 			wantsToBeSever = true;
 
+			mpNetworkManager->setCurrentDataMethod(DataMethod::DATA_COUPLING);
 			GoToNextState(this);
-			//data sharing enum = something
 			break;
 		case 6:
 			gpGame->exitGame();

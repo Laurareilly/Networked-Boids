@@ -8,9 +8,10 @@
 
 void NetworkManager::SendBoidData(std::map<UnitID, Unit*> units) //(Unit *units[30]) //take in list of boids as param
 {
+	//printf("send boid data is being called");
 	char sendBuff[2048];
 	unsigned int bytesWritten = 0;
-	sendBuff[0] = ID_BOID_DATA;
+	sendBuff[0] = 0; //ID_BOID_DATA;
 	++bytesWritten;
 
 	//for loop go thorugh each boid 
@@ -19,6 +20,7 @@ void NetworkManager::SendBoidData(std::map<UnitID, Unit*> units) //(Unit *units[
 	{
 		if (it->second == nullptr)
 		{
+			printf("the unit is null");
 			break;
 		}
 
@@ -30,6 +32,7 @@ void NetworkManager::SendBoidData(std::map<UnitID, Unit*> units) //(Unit *units[
 		data[0].velY = it->second->getPhysicsComponent()->getVelocity().getY();
 
 		bytesWritten += Write(sendBuff + bytesWritten);
+		printf("bytes written: %i\n", bytesWritten);
 	}
 
 

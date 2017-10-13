@@ -27,6 +27,12 @@ using namespace RakNet;
 class UnitManager;
 class Unit;
 
+	enum DataMethod
+	{
+		DATA_PUSH,
+		DATA_SHARING,
+		DATA_COUPLING
+	};
 class NetworkManager
 {
 public:
@@ -48,6 +54,11 @@ public:
 	unsigned int Write(char *buffer);
 	unsigned int Read(char *buffer);
 
+
+	DataMethod mCurrentDataMethod;
+
+	void setCurrentDataMethod(DataMethod method) { mCurrentDataMethod = method; }
+
 	//void updateClient();
 
 	RakPeerInterface *mpPeer;
@@ -56,7 +67,6 @@ public:
 	bool mIsServer;
 
 	Unit *mTmpUnit;
-
 
 	enum GameMessages
 	{
