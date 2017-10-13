@@ -17,10 +17,11 @@ using namespace std;
 UnitManager::UnitManager(Uint32 maxSize)
 	:mPool(maxSize, sizeof(Unit))
 {
-	for (unsigned int i = 0; i < 15; ++i)
-	{
-		mReceivedUnits[i] = NULL;
-	}
+
+	//for (unsigned int i = 0; i < 15; ++i)
+	//{
+	//	mReceivedUnits[i] = NULL;
+	//}
 }
 
 Unit* UnitManager::createUnit(const Sprite& sprite, bool shouldWrap, const PositionData& posData /*= ZERO_POSITION_DATA*/, const PhysicsData& physicsData /*= ZERO_PHYSICS_DATA*/, const UnitID& id)

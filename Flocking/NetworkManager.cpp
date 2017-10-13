@@ -149,6 +149,7 @@ void NetworkManager::Update()
 			break;
 		case ID_BOID_DATA:
 		{
+			std::cout << "id boids data" << std::endl;
 			int position = 1;
 
 			gpGame->getUnitManager()->updateAll(true); //hehe
