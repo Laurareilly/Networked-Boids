@@ -22,6 +22,7 @@ public:
 	virtual void SyncBoidList() {};
 	virtual void SendBoidData() {};
 	virtual void AcceptedToServer() {};
+	//virtual SystemAddress GetPeerAddress() { return data->peerSystemAddress; }
 
 	virtual std::string* GetHeaderMessage() { return data->headerMessage; };
 

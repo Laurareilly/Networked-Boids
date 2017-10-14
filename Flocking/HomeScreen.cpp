@@ -44,6 +44,7 @@ void HomeScreen::UpdateState()
 		if (successfullyConnectedToServer)
 		{
 			waitFrames = 30;
+			std::cout << "hi" << std::endl;
 			GoToNextState(this);
 		}
 		else
@@ -66,7 +67,7 @@ void HomeScreen::UpdateState()
 			GoToNextState(this);
 			break;
 		case 2:
-			mpNetworkManager->initClient(data->portNumber, data->ipAddress);
+			successfullyConnectedToServer = mpNetworkManager->initClient(data->portNumber, data->ipAddress);
 			data->isLocal = 0;
 			data->doesUpdateNetworking = 1;
 			tryingToConnect = true;

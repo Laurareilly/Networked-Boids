@@ -89,7 +89,8 @@ public:
 		ID_SERVER_MESSAGE,			//Sent by Server, received by Clients, displayed in all red
 		ID_PEER_LEAVE,				//Sent by EITHER ***PEER*** when they go to the lobby or press SHIFT ESC
 		
-		ID_BOID_DATA
+		ID_BOID_DATA,
+		TEST
 	};
 
 	enum RoomState

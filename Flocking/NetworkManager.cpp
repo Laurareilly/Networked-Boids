@@ -11,7 +11,7 @@ void NetworkManager::SendBoidData(std::map<UnitID, Unit*> units) //(Unit *units[
 	//printf("send boid data is being called");
 	char sendBuff[2048];
 	unsigned int bytesWritten = 0;
-	sendBuff[0] = 0; //ID_BOID_DATA;
+	sendBuff[0] = ID_BOID_DATA;
 	++bytesWritten;
 
 	//for loop go thorugh each boid 
@@ -32,12 +32,13 @@ void NetworkManager::SendBoidData(std::map<UnitID, Unit*> units) //(Unit *units[
 		data[0].velY = it->second->getPhysicsComponent()->getVelocity().getY();
 
 		bytesWritten += Write(sendBuff + bytesWritten);
-		printf("bytes written: %i\n", bytesWritten);
+		//printf("bytes written: %i\n", bytesWritten);
 	}
 
 
 	//send it
-	mpPeer->Send(sendBuff, sizeof(sendBuff), HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_SYSTEM_ADDRESS, true); //Sends to everyone except for unassigned system address (USA) so we'll only send it to the client
+	//mpPeer->Send(sendBuff, bytesWritten, HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_SYSTEM_ADDRESS, true); //Sends to everyone except for unassigned system address (USA) so we'll only send it to the client
+	mpPeer->Send(sendBuff, bytesWritten, HIGH_PRIORITY, RELIABLE_ORDERED, 0, mpPeer->GetSystemAddressFromIndex(0), false); //Sends to everyone except for unassigned system address (USA) so we'll only send it to the client
 }
 
 unsigned int NetworkManager::Write(char *buffer)
@@ -102,16 +103,20 @@ void NetworkManager::initClient(int cPort, char * cIP)
 	}
 
 	serverPort = cPort;
-	mpPeer->Connect(cIP, serverPort, 0, 0);
+    mpPeer->Connect(cIP, serverPort, 0, 0);
 }
 
 void NetworkManager::Update()
 {
+	//std::cout << "networkmanger update" << std::endl;
 	for (mpPacket = mpPeer->Receive(); mpPacket; mpPeer->DeallocatePacket(mpPacket), mpPacket = mpPeer->Receive())
 	{
 		switch (mpPacket->data[0])
 		{
+
+		std::cout << mpPacket->data[0] << std::endl;
 		case ID_REMOTE_DISCONNECTION_NOTIFICATION:
+			printf("Client disconnects");
 			gpGame->theState->ForcePlayerToLobby();
 			mpPeer->CloseConnection(mpPacket->systemAddress, true);
 			break;
@@ -120,16 +125,26 @@ void NetworkManager::Update()
 			mpPeer->CloseConnection(mpPacket->systemAddress, true);
 			break;
 		case ID_REMOTE_NEW_INCOMING_CONNECTION:
-			//printf("Another client has connected.\n");
+			printf("Another client has connected.\n");
 			break;
 		case ID_NEW_INCOMING_CONNECTION:
-			//printf("A client has connected.\n");
+			printf("A client has connected.\n");
 			break;
 		case ID_NEW_CLIENT_JOIN:
 			break;
 		case ID_CONNECTION_REQUEST_ACCEPTED: //the client receives this
+		{
 			printf("Our connection request has been accepted.\n");
 			gpGame->theState->AcceptedToServer();
+
+			char sendBuff[2048];
+			unsigned int bytesWritten = 0;
+			sendBuff[0] = ID_BOID_DATA;
+			bytesWritten++;
+
+			mpPeer->Send(sendBuff, bytesWritten, HIGH_PRIORITY, RELIABLE_ORDERED, 0, mpPeer->GetSystemAddressFromIndex(0), false);
+			//mpPeer->Send(sendBuff, bytesWritten, HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_SYSTEM_ADDRESS, true);
+		}
 			break;
 		case ID_CLIENT_NUMBER:
 			break;
@@ -188,6 +203,14 @@ void NetworkManager::Update()
 			gpGame->getUnitManager()->deleteIfShouldBeDeleted();
 		}
 		break;
+		case TEST:
+		{
+			std::cout << "test" << std::endl;
+		}
+		default:
+		{
+			std::cout << "receiving id: " << mpPacket->data[0] << std::endl;
+		}
 		}
 	}
 }

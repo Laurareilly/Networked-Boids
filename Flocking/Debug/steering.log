@@ -1,6 +1,8 @@
-﻿  NetworkManager.cpp
-c:\users\laura.reilly\desktop\real networked boids\flocking\networkmanager.cpp(14): warning C4309: '=': truncation of constant value
-  ActiveGameState.cpp
+﻿  HomeScreen.cpp
   Generating Code...
+  Skipping... (no relevant changes detected)
+  main.cpp
+  Game.cpp
+  ActiveGameState.cpp
   steering.vcxproj -> C:\Users\laura.reilly\Desktop\real networked boids\Flocking\Debug\steering.exe
   steering.vcxproj -> C:\Users\laura.reilly\Desktop\real networked boids\Flocking\Debug\steering.pdb (Full PDB)
