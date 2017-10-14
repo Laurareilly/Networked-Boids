@@ -74,30 +74,30 @@ void HomeScreen::UpdateState()
 			data->mpNetworkManager->initClient(data->portNumber, data->ipAddress);
 			break;
 		case 3:
+			data->mpNetworkManager->setCurrentDataMethod(DataMethod::DATA_PUSH);
 			data->isLocal = 0;
 			tryingToConnect = true;
 			wantsToBeSever = true;
 			data->mpNetworkManager->initServer(data->portNumber);
 
-			data->mpNetworkManager->setCurrentDataMethod(DataMethod::DATA_PUSH);
 			GoToNextState(this);
 			break;
 		case 4:
+			data->mpNetworkManager->setCurrentDataMethod(DataMethod::DATA_SHARING);
 			data->isLocal = 0;
 			tryingToConnect = true;
 			wantsToBeSever = true;
 			data->mpNetworkManager->initServer(data->portNumber);
 
-			data->mpNetworkManager->setCurrentDataMethod(DataMethod::DATA_SHARING);
 			GoToNextState(this);
 			break;
 		case 5:
+			data->mpNetworkManager->setCurrentDataMethod(DataMethod::DATA_COUPLING);
 			data->isLocal = 0;
 			tryingToConnect = true;
 			wantsToBeSever = true;
 			data->mpNetworkManager->initServer(data->portNumber);
 
-			data->mpNetworkManager->setCurrentDataMethod(DataMethod::DATA_COUPLING);
 			GoToNextState(this);
 			break;
 		case 6:

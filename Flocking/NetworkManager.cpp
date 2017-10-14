@@ -181,11 +181,11 @@ void NetworkManager::Update()
 			mpPeer->Send(sendBuff, bytesWritten, HIGH_PRIORITY, RELIABLE_ORDERED, 0, mpPacket->systemAddress, false);*/
 			//mpPeer->Send(sendBuff, bytesWritten, HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_SYSTEM_ADDRESS, true);
 
-			UsernameMessage username[1] = { ID_USERNAME,  "", "hello" };
+			UsernameMessage username[1] = { ID_ASK_FOR_DATA_METHOD,  "", "WHATS UR data method" };
 			username[0].messageID;
 		
 			mpPeer->Send((char*)username, sizeof(username), HIGH_PRIORITY, RELIABLE_ORDERED, 0, mpPacket->systemAddress, false);
-			mpPeer->Send((char*)username, sizeof(username), HIGH_PRIORITY, RELIABLE_ORDERED, 0, mpPacket->systemAddress, true);
+			//mpPeer->Send((char*)username, sizeof(username), HIGH_PRIORITY, RELIABLE_ORDERED, 0, mpPacket->systemAddress, true);
 		}
 			break;
 		case ID_CLIENT_NUMBER:
@@ -209,8 +209,6 @@ void NetworkManager::Update()
 			break;
 		case ID_BOID_DATA:
 		{
-			std::cout << "id boids data" << std::endl;
-
 			gpGame->getUnitManager()->updateAll(true); //hehe
 			int position = 1;
 			char* buffer = (char*)mpPacket->data;
@@ -241,7 +239,7 @@ void NetworkManager::Update()
 				{
 					//add boid
 					UnitManager::mBoidsOnScreen++;
-					Unit* pUnit = gpGame->getUnitManager()->createUnit(*gpGame->getSpriteManager()->getSprite(AI_ICON_SPRITE_ID), true, PositionData(Vector2D(rand() % gpGame->getGraphicsSystem()->getWidth(), rand() % gpGame->getGraphicsSystem()->getHeight()), 0.0f));
+					Unit* pUnit = gpGame->getUnitManager()->createUnit(mCurrentDataMethod == DataMethod::DATA_SHARING, *gpGame->getSpriteManager()->getSprite(AI_ICON_SPRITE_ID), true, PositionData(Vector2D(rand() % gpGame->getGraphicsSystem()->getWidth(), rand() % gpGame->getGraphicsSystem()->getHeight()), 0.0f));
 					pUnit->setID(data[0].boidID);
 					pUnit->getPositionComponent()->setFacing(data[0].rotation);
 					pUnit->getPositionComponent()->setPosition(Vector2D(data[0].posX, data[0].posY));
@@ -251,41 +249,21 @@ void NetworkManager::Update()
 				}
 			}
 
-
-			//while ((char *)mpPacket->data[position] != NULL)
-			//{
-			//	position += Read((char*)mpPacket->data + position);
-
-			//	mTmpUnit = gpGame->getUnitManager()->getUnit(data[0].boidID);
-
-			//	if (mTmpUnit)
-			//	{
-			//		mTmpUnit->setID(data[0].boidID);
-			//		mTmpUnit->getPositionComponent()->setPosition(Vector2D(data[0].posX, data[0].posY));
-			//		mTmpUnit->getPositionComponent()->setFacing(data[0].rotation);
-			//		mTmpUnit->getPhysicsComponent()->setVelocity(Vector2D(data[0].velX, data[0].velY));
-			//		mTmpUnit->setShouldBeDeleted(false);
-			//	}
-			//	else
-			//	{
-			//		//add boid
-			//		UnitManager::mBoidsOnScreen++;
-			//		Unit* pUnit = gpGame->getUnitManager()->createUnit(*gpGame->getSpriteManager()->getSprite(AI_ICON_SPRITE_ID), true, PositionData(Vector2D(rand() % gpGame->getGraphicsSystem()->getWidth(), rand() % gpGame->getGraphicsSystem()->getHeight()), 0.0f));
-			//		pUnit->setID(data[0].boidID);
-			//		pUnit->getPositionComponent()->setFacing(data[0].rotation);
-			//		pUnit->getPositionComponent()->setPosition(Vector2D(data[0].posX, data[0].posY));
-			//		pUnit->getPhysicsComponent()->setVelocity(Vector2D(data[0].velX, data[0].velY));
-			//		pUnit->setShouldBeDeleted(false);
-			//		pUnit->setSteering(Steering::FLOCKING, ZERO_VECTOR2D, PLAYER_UNIT_ID);
-			//	}
-			//}
-
 			gpGame->getUnitManager()->deleteIfShouldBeDeleted();
 		}
 		break;
-		case ID_USERNAME:
+		case ID_ASK_FOR_DATA_METHOD:
 		{
-			std::cout << "test" << std::endl;
+			ClientNumberMessage msg[1] = { ID_SEND_DATA_METHOD, 0 };
+			msg[0].clientNumber = getCurrentDataMethod();
+
+			mpPeer->Send((char*)msg, sizeof(msg), HIGH_PRIORITY, RELIABLE_ORDERED, 0, mpPacket->systemAddress, false);
+		}
+		case ID_SEND_DATA_METHOD:
+		{
+			ClientNumberMessage *username = (ClientNumberMessage*)mpPacket->data;
+
+			setCurrentDataMethod(username->clientNumber);
 		}
 		break;
 		default:
@@ -295,4 +273,11 @@ void NetworkManager::Update()
 		break;
 		}
 	}
+}
+
+void NetworkManager::SendDisconnection()
+{
+	ClientNumberMessage clientNumber[1] = { ID_DISCONNECTION_NOTIFICATION, 0 };
+	//send
+	mpPeer->Send((char*)clientNumber, sizeof(clientNumber), HIGH_PRIORITY, RELIABLE_ORDERED, 0, mpPeer->GetSystemAddressFromIndex(0), false);
 }

@@ -25,7 +25,7 @@ AddUnitMessage::~AddUnitMessage()
 void AddUnitMessage::process()
 {
 	UnitManager::mBoidsOnScreen++;
-	Unit* pUnit = gpGame->getUnitManager()->createUnit(*gpGame->getSpriteManager()->getSprite(AI_ICON_SPRITE_ID), true, PositionData(Vector2D(rand() % gpGame->getGraphicsSystem()->getWidth(), rand() % gpGame->getGraphicsSystem()->getHeight()), 0.0f));
+	Unit* pUnit = gpGame->getUnitManager()->createUnit(false, *gpGame->getSpriteManager()->getSprite(AI_ICON_SPRITE_ID), true, PositionData(Vector2D(rand() % gpGame->getGraphicsSystem()->getWidth(), rand() % gpGame->getGraphicsSystem()->getHeight()), 0.0f));
 	pUnit->getPositionComponent()->setFacing((rand() % (int)MAX_DEGREES) * 0.0174533);
 	pUnit->setSteering(Steering::FLOCKING, ZERO_VECTOR2D, PLAYER_UNIT_ID);
 }

@@ -33,6 +33,9 @@ void ActiveGameState::UpdateState()
 	if (escapePressed)
 	{
 		if (!data->isLocal)
+		{
+			data->mpNetworkManager->SendDisconnection();
+		}
 			//send force player to lobby packet
 		ForcePlayerToLobby();
 	}

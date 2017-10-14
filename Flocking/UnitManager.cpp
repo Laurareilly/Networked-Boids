@@ -24,7 +24,7 @@ UnitManager::UnitManager(Uint32 maxSize)
 	//}
 }
 
-Unit* UnitManager::createUnit(const Sprite& sprite, bool shouldWrap, const PositionData& posData /*= ZERO_POSITION_DATA*/, const PhysicsData& physicsData /*= ZERO_PHYSICS_DATA*/, const UnitID& id)
+Unit* UnitManager::createUnit(bool addOnlyToReceived, const Sprite& sprite, bool shouldWrap, const PositionData& posData /*= ZERO_POSITION_DATA*/, const PhysicsData& physicsData /*= ZERO_PHYSICS_DATA*/, const UnitID& id)
 {
 	Unit* pUnit = NULL;
 
@@ -42,7 +42,10 @@ Unit* UnitManager::createUnit(const Sprite& sprite, bool shouldWrap, const Posit
 		}
 
 		//place in map
-		mUnitMap[theID] = pUnit;
+		if (addOnlyToReceived) 
+			mReceivedUnits[theID] = pUnit;
+		else
+			mUnitMap[theID] = pUnit;
 
 		//assign id and increment nextID counter
 		pUnit->mID = theID;
@@ -67,7 +70,7 @@ Unit* UnitManager::createUnit(const Sprite& sprite, bool shouldWrap, const Posit
 
 Unit* UnitManager::createPlayerUnit(const Sprite& sprite, bool shouldWrap /*= true*/, const PositionData& posData /*= ZERO_POSITION_DATA*/, const PhysicsData& physicsData /*= ZERO_PHYSICS_DATA*/)
 {
-	return createUnit(sprite, shouldWrap, posData, physicsData, PLAYER_UNIT_ID);
+	return createUnit(false, sprite, shouldWrap, posData, physicsData, PLAYER_UNIT_ID);
 }
 
 
@@ -78,7 +81,7 @@ Unit* UnitManager::createRandomUnit(const Sprite& sprite)
 	int posY = rand() % gpGame->getGraphicsSystem()->getHeight();
 	int velX = rand() % 50 - 25;
 	int velY = rand() % 40 - 20;
-	Unit* pUnit = createUnit(sprite, false, PositionData(Vector2D(posX, posY), 0), PhysicsData(Vector2D(velX, velY), Vector2D(0.1f, 0.1f), 0.1f, 0.05f));
+	Unit* pUnit = createUnit(false, sprite, false, PositionData(Vector2D(posX, posY), 0), PhysicsData(Vector2D(velX, velY), Vector2D(0.1f, 0.1f), 0.1f, 0.05f));
 	if (pUnit != NULL)
 	{
 		//pUnit->setSteering(Steering::SEEK, Vector2D(rand() % gpGame->getGraphicsSystem()->getWidth(), rand() % gpGame->getGraphicsSystem()->getHeight()));
@@ -196,12 +199,22 @@ void UnitManager::updateAll(float elapsedTime)
 	{
 		it->second->update(elapsedTime);
 	}
+
+	for (auto it = mReceivedUnits.begin(); it != mReceivedUnits.end(); ++it)
+	{
+		it->second->update(elapsedTime);
+	}
 }
 
 
 void UnitManager::updateAll(bool shouldDelete)
 {
 	for (auto it = mUnitMap.begin(); it != mUnitMap.end(); ++it)
+	{
+		it->second->setShouldBeDeleted(shouldDelete);
+	}
+
+	for (auto it = mReceivedUnits.begin(); it != mReceivedUnits.end(); ++it)
 	{
 		it->second->setShouldBeDeleted(shouldDelete);
 	}

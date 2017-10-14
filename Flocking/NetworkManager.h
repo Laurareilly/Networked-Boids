@@ -46,6 +46,8 @@ public:
 	void Update();
 	void ShutdownServer() {};
 
+	void SendDisconnection();
+
 	void SendNetworkedMessage(char* cMessage, int cSenderID) {};
 	void DisconnectFromPeers() {};
 
@@ -57,7 +59,10 @@ public:
 
 	DataMethod mCurrentDataMethod;
 
+	int getCurrentDataMethod() { return mCurrentDataMethod; }
+
 	void setCurrentDataMethod(DataMethod method) { mCurrentDataMethod = method; }
+	void setCurrentDataMethod(int method) { mCurrentDataMethod = (DataMethod)method; }
 
 	//void updateClient();
 
@@ -90,7 +95,8 @@ public:
 		ID_PEER_LEAVE,				//Sent by EITHER ***PEER*** when they go to the lobby or press SHIFT ESC
 		
 		ID_BOID_DATA,
-		TEST
+		ID_ASK_FOR_DATA_METHOD,
+		ID_SEND_DATA_METHOD
 	};
 
 	enum RoomState
