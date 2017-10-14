@@ -37,14 +37,26 @@ void NetworkManager::SendBoidData(std::map<UnitID, Unit*> units) //(Unit *units[
 
 
 	//send it
-	mpPeer->Send(sendBuff, sizeof(sendBuff), HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_SYSTEM_ADDRESS, true); //Sends to everyone except for unassigned system address (USA) so we'll only send it to the client
+	mpPeer->Send(sendBuff, bytesWritten, HIGH_PRIORITY, RELIABLE_ORDERED, 0, mpPeer->GetSystemAddressFromIndex(0), false); //Sends to everyone except for unassigned system address (USA) so we'll only send it to the client
 }
 
 unsigned int NetworkManager::Write(char *buffer)
 {
 	const char *const start = buffer; //starting pos
-	memcpy(buffer, data, sizeof(data));
-	buffer += sizeof(data);
+	/*memcpy(buffer, data, sizeof(data));
+	buffer += sizeof(data);*/
+	memcpy(buffer, &data[0].boidID, sizeof(char));
+	buffer += sizeof(char);
+	memcpy(buffer, &data[0].posX, sizeof(float));
+	buffer += sizeof(float);
+	memcpy(buffer, &data[0].posY, sizeof(float));
+	buffer += sizeof(float);
+	memcpy(buffer, &data[0].velX, sizeof(float));
+	buffer += sizeof(float);
+	memcpy(buffer, &data[0].velY, sizeof(float));
+	buffer += sizeof(float);
+	memcpy(buffer, &data[0].rotation, sizeof(float));
+	buffer += sizeof(float);
 	return buffer - start;
 }
 

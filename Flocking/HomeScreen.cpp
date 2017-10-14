@@ -37,6 +37,7 @@ void HomeScreen::UpdateState()
 		data->enterServer = false;
 		waitFrames = 30;
 		GoToNextState(this);
+		return;
 	}
 
 	if (tryingToConnect)

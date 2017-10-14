@@ -79,9 +79,16 @@ void ActiveGameState::UpdateNetworking()
 {
 	//send boid data
 	//mpNetworkManager->SendBoidData(gpGame->getUnitManager()->getReceivedUnits());
+	if (!data->doesUpdateNetworking)
+	{
+		return;
+	}
+
 	mpNetworkManager->SendBoidData(gpGame->getUnitManager()->getLocalUnits());
 
 	//update
+
+
 	mpNetworkManager->Update();
 }
 
