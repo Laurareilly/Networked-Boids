@@ -49,11 +49,11 @@ protected:
 		char *ipAddress = "127.0.0.1";
 
 		char enterServer = 0;
+		NetworkManager *mpNetworkManager;
 	}data[1];
 
 	virtual void GoToNextState(ApplicationState *passData) = 0;
 	virtual void OnArriveFromPrevious(ApplicationState *passData) = 0;
 
-	NetworkManager *mpNetworkManager;
 };
 #endif // APPLICATION_STATE

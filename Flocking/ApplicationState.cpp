@@ -3,10 +3,10 @@
 
 ApplicationState::ApplicationState()
 {
-	 mpNetworkManager = new NetworkManager();
+	 data->mpNetworkManager = new NetworkManager();
 }
 
 ApplicationState::~ApplicationState()
 {
-	delete mpNetworkManager; mpNetworkManager = nullptr;
+	delete data->mpNetworkManager; data->mpNetworkManager = nullptr;
 }

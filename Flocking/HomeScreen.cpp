@@ -37,6 +37,7 @@ void HomeScreen::UpdateState()
 		data->enterServer = false;
 		waitFrames = 30;
 		GoToNextState(this);
+		return;
 	}
 
 	if (tryingToConnect)
@@ -67,36 +68,36 @@ void HomeScreen::UpdateState()
 			GoToNextState(this);
 			break;
 		case 2:
-			successfullyConnectedToServer = mpNetworkManager->initClient(data->portNumber, data->ipAddress);
 			data->isLocal = 0;
 			data->doesUpdateNetworking = 1;
 			tryingToConnect = true;
+			data->mpNetworkManager->initClient(data->portNumber, data->ipAddress);
 			break;
 		case 3:
-			mpNetworkManager->initServer(data->portNumber);
 			data->isLocal = 0;
 			tryingToConnect = true;
 			wantsToBeSever = true;
+			data->mpNetworkManager->initServer(data->portNumber);
 
-			mpNetworkManager->setCurrentDataMethod(DataMethod::DATA_PUSH);
+			data->mpNetworkManager->setCurrentDataMethod(DataMethod::DATA_PUSH);
 			GoToNextState(this);
 			break;
 		case 4:
-			mpNetworkManager->initServer(data->portNumber);
 			data->isLocal = 0;
 			tryingToConnect = true;
 			wantsToBeSever = true;
+			data->mpNetworkManager->initServer(data->portNumber);
 
-			mpNetworkManager->setCurrentDataMethod(DataMethod::DATA_SHARING);
+			data->mpNetworkManager->setCurrentDataMethod(DataMethod::DATA_SHARING);
 			GoToNextState(this);
 			break;
 		case 5:
-			mpNetworkManager->initServer(data->portNumber);
 			data->isLocal = 0;
 			tryingToConnect = true;
 			wantsToBeSever = true;
+			data->mpNetworkManager->initServer(data->portNumber);
 
-			mpNetworkManager->setCurrentDataMethod(DataMethod::DATA_COUPLING);
+			data->mpNetworkManager->setCurrentDataMethod(DataMethod::DATA_COUPLING);
 			GoToNextState(this);
 			break;
 		case 6:
@@ -149,7 +150,7 @@ void HomeScreen::UpdateNetworking()
 	if (!data->doesUpdateNetworking)
 		return;
 
-	mpNetworkManager->Update();
+	data->mpNetworkManager->Update();
 }
 
 void HomeScreen::Display()

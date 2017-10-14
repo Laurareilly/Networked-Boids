@@ -38,14 +38,27 @@ void NetworkManager::SendBoidData(std::map<UnitID, Unit*> units) //(Unit *units[
 
 	//send it
 	//mpPeer->Send(sendBuff, bytesWritten, HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_SYSTEM_ADDRESS, true); //Sends to everyone except for unassigned system address (USA) so we'll only send it to the client
-	mpPeer->Send(sendBuff, bytesWritten, HIGH_PRIORITY, RELIABLE_ORDERED, 0, mpPeer->GetSystemAddressFromIndex(0), false); //Sends to everyone except for unassigned system address (USA) so we'll only send it to the client
+
+	//mpPeer->Send(sendBuff, bytesWritten, HIGH_PRIORITY, RELIABLE_ORDERED, 0, mpPeer->GetSystemAddressFromIndex(0), false); //Sends to everyone except for unassigned system address (USA) so we'll only send it to the client
 }
 
 unsigned int NetworkManager::Write(char *buffer)
 {
 	const char *const start = buffer; //starting pos
-	memcpy(buffer, data, sizeof(data));
-	buffer += sizeof(data);
+	/*memcpy(buffer, data, sizeof(data));
+	buffer += sizeof(data);*/
+	memcpy(buffer, &data[0].boidID, sizeof(char));
+	buffer += sizeof(char);
+	memcpy(buffer, &data[0].posX, sizeof(float));
+	buffer += sizeof(float);
+	memcpy(buffer, &data[0].posY, sizeof(float));
+	buffer += sizeof(float);
+	memcpy(buffer, &data[0].velX, sizeof(float));
+	buffer += sizeof(float);
+	memcpy(buffer, &data[0].velY, sizeof(float));
+	buffer += sizeof(float);
+	memcpy(buffer, &data[0].rotation, sizeof(float));
+	buffer += sizeof(float);
 	return buffer - start;
 }
 
@@ -84,18 +97,19 @@ void NetworkManager::initServer(int cPort)
 	serverPort = cPort;
 	sd = new SocketDescriptor(serverPort, 0);
 	mpPeer->SetMaximumIncomingConnections(maxClients);
-	mpPeer->SetTimeoutTime(1000, RakNet::UNASSIGNED_SYSTEM_ADDRESS);
-	mpPeer->SetOccasionalPing(true);
-	mpPeer->SetUnreliableTimeout(1000);
+	//mpPeer->SetTimeoutTime(1000, RakNet::UNASSIGNED_SYSTEM_ADDRESS);
+	//mpPeer->SetOccasionalPing(true);
+	//mpPeer->SetUnreliableTimeout(1000);
 	mpPeer->Startup(maxClients, sd, 1);
+	mIsServer = true;
 }
 
 void NetworkManager::initClient(int cPort, char * cIP)
 {
 	mIsServer = false;
-	sd = new SocketDescriptor;
+	sd = new SocketDescriptor();
 	mpPeer->Startup(1, sd, 1);
-	mpPeer->SetOccasionalPing(true);
+	//mpPeer->SetOccasionalPing(true);
 
 	if (!mpPeer)
 	{
@@ -108,6 +122,7 @@ void NetworkManager::initClient(int cPort, char * cIP)
 
 void NetworkManager::Update()
 {
+	mpPeer;
 	//std::cout << "networkmanger update" << std::endl;
 	for (mpPacket = mpPeer->Receive(); mpPacket; mpPeer->DeallocatePacket(mpPacket), mpPacket = mpPeer->Receive())
 	{
@@ -137,13 +152,19 @@ void NetworkManager::Update()
 			printf("Our connection request has been accepted.\n");
 			gpGame->theState->AcceptedToServer();
 
-			char sendBuff[2048];
+			/*char sendBuff[2048];
 			unsigned int bytesWritten = 0;
-			sendBuff[0] = ID_BOID_DATA;
+			sendBuff[0] = TEST;
 			bytesWritten++;
 
-			mpPeer->Send(sendBuff, bytesWritten, HIGH_PRIORITY, RELIABLE_ORDERED, 0, mpPeer->GetSystemAddressFromIndex(0), false);
+			mpPeer->Send(sendBuff, bytesWritten, HIGH_PRIORITY, RELIABLE_ORDERED, 0, mpPacket->systemAddress, false);*/
 			//mpPeer->Send(sendBuff, bytesWritten, HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_SYSTEM_ADDRESS, true);
+
+			UsernameMessage username[1] = { ID_USERNAME,  "", "hello" };
+			username[0].messageID;
+		
+			mpPeer->Send((char*)username, sizeof(username), HIGH_PRIORITY, RELIABLE_ORDERED, 0, mpPacket->systemAddress, false);
+			mpPeer->Send((char*)username, sizeof(username), HIGH_PRIORITY, RELIABLE_ORDERED, 0, mpPacket->systemAddress, true);
 		}
 			break;
 		case ID_CLIENT_NUMBER:
@@ -203,14 +224,16 @@ void NetworkManager::Update()
 			gpGame->getUnitManager()->deleteIfShouldBeDeleted();
 		}
 		break;
-		case TEST:
+		case ID_USERNAME:
 		{
 			std::cout << "test" << std::endl;
 		}
+		break;
 		default:
 		{
 			std::cout << "receiving id: " << mpPacket->data[0] << std::endl;
 		}
+		break;
 		}
 	}
 }

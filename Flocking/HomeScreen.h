@@ -45,6 +45,7 @@ public:
 		data->doesUpdateState = 1;
 		data->doesUpdateNetworking = 0;
 		data->doesSendData = 0;
+		data->mpNetworkManager = passData->data->mpNetworkManager;
 	}
 
 	virtual void GoToNextState(ApplicationState *passData);
