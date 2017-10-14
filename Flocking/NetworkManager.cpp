@@ -27,6 +27,7 @@ void NetworkManager::SendBoidData(std::map<UnitID, Unit*> units) //(Unit *units[
 			break;
 		}
 
+		if (it->second->isReceived) continue;
 
 		data[0].boidID = it->second->getID();
 		data[0].posX = it->second->getPositionComponent()->getPosition().getX();
@@ -209,7 +210,12 @@ void NetworkManager::Update()
 			break;
 		case ID_BOID_DATA:
 		{
-			gpGame->getUnitManager()->updateAll(true); //hehe
+			if (mCurrentDataMethod != DataMethod::DATA_SHARING)
+			{
+				gpGame->getUnitManager()->updateAll(true); //hehe
+			}
+
+
 			int position = 1;
 			char* buffer = (char*)mpPacket->data;
 			++buffer;

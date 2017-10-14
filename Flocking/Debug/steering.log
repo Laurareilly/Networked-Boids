@@ -1,3 +1,11 @@
 ﻿  UnitManager.cpp
+  NetworkManager.cpp
+c:\users\laura.reilly\desktop\real networked boids\flocking\networkmanager.cpp(14): warning C4309: '=': truncation of constant value
+c:\users\laura.reilly\desktop\real networked boids\flocking\networkmanager.cpp(185): warning C4838: conversion from 'NetworkManager::GameMessages' to 'char' requires a narrowing conversion
+c:\users\laura.reilly\desktop\real networked boids\flocking\networkmanager.cpp(185): warning C4309: 'initializing': truncation of constant value
+c:\users\laura.reilly\desktop\real networked boids\flocking\networkmanager.cpp(263): warning C4838: conversion from 'NetworkManager::GameMessages' to 'char' requires a narrowing conversion
+c:\users\laura.reilly\desktop\real networked boids\flocking\networkmanager.cpp(263): warning C4309: 'initializing': truncation of constant value
+  Generating Code...
+cl : Command line warning D9028: minimal rebuild failure, reverting to normal build
   steering.vcxproj -> C:\Users\laura.reilly\Desktop\real networked boids\Flocking\Debug\steering.exe
   steering.vcxproj -> C:\Users\laura.reilly\Desktop\real networked boids\Flocking\Debug\steering.pdb (Full PDB)

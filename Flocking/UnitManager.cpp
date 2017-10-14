@@ -42,10 +42,13 @@ Unit* UnitManager::createUnit(bool addOnlyToReceived, const Sprite& sprite, bool
 		}
 
 		//place in map
-		if (addOnlyToReceived) 
-			mReceivedUnits[theID] = pUnit;
-		else
-			mUnitMap[theID] = pUnit;
+		//if (addOnlyToReceived) 
+		//	mReceivedUnits[theID] = pUnit;
+		//else
+		//	mUnitMap[theID] = pUnit;
+
+		pUnit->isReceived = addOnlyToReceived;
+		mUnitMap[theID] = pUnit;
 
 		//assign id and increment nextID counter
 		pUnit->mID = theID;
@@ -211,7 +214,8 @@ void UnitManager::updateAll(bool shouldDelete)
 {
 	for (auto it = mUnitMap.begin(); it != mUnitMap.end(); ++it)
 	{
-		it->second->setShouldBeDeleted(shouldDelete);
+		//if(!it->second->isReceived)
+			it->second->setShouldBeDeleted(shouldDelete);
 	}
 
 	for (auto it = mReceivedUnits.begin(); it != mReceivedUnits.end(); ++it)
@@ -224,5 +228,17 @@ void UnitManager::cleanupBoids()
 {
 	updateAll(true); //this is really good (DELIGHTER)
 	deleteIfShouldBeDeleted();
+}
+
+std::map<UnitID, Unit*> UnitManager::getLocalUnits(bool cReceived)
+{
+	return mUnitMap;
+	//std::map<UnitID, Unit*> tmpMap;
+
+	//for (auto it = mUnitMap.begin(); it != mUnitMap.end(); ++it)
+	//{
+	//	it->second->isReceived == cReceived;
+	//	tmpMap[]
+	//}
 }
 

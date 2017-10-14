@@ -30,7 +30,7 @@ Steering* CohesionSteering::getSteering()
 
 	for (auto it = potentialTargets.begin(); it != potentialTargets.end(); ++it)
 	{
-		if (it->second == pOwner)
+		if (it->second == pOwner || it->second->isReceived != pOwner->isReceived)
 		{
 			continue;
 		}

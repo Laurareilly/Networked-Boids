@@ -91,12 +91,11 @@ void ActiveGameState::UpdateNetworking()
 
 	data->mpNetworkManager->Update();
 
-	if (data->mpNetworkManager->mIsServer)
-		data->mpNetworkManager->SendBoidData(gpGame->getUnitManager()->getLocalUnits());
-
+	if (!data->mpNetworkManager->mIsServer && data->mpNetworkManager->mCurrentDataMethod == DataMethod::DATA_PUSH) return;
+		
+	
+	data->mpNetworkManager->SendBoidData(gpGame->getUnitManager()->getLocalUnits());
 	//update
-
-
 }
 
 void ActiveGameState::Display()

@@ -48,6 +48,8 @@ public:
 	bool getShouldBeDeleted() { return mShouldBeDeleted; }
 	void setShouldBeDeleted(bool aDelete) { mShouldBeDeleted = aDelete; }
 
+	bool isReceived;
+
 private:
 	UnitID mID;
 	ComponentID mPhysicsComponentID;
