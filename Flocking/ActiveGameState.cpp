@@ -32,6 +32,8 @@ void ActiveGameState::UpdateState()
 
 	if (escapePressed)
 	{
+		if (!data->isLocal)
+			//send force player to lobby packet
 		ForcePlayerToLobby();
 	}
 
@@ -85,7 +87,9 @@ void ActiveGameState::UpdateNetworking()
 	}
 
 	data->mpNetworkManager->Update();
-	data->mpNetworkManager->SendBoidData(gpGame->getUnitManager()->getLocalUnits());
+
+	if (data->mpNetworkManager->mIsServer)
+		data->mpNetworkManager->SendBoidData(gpGame->getUnitManager()->getLocalUnits());
 
 	//update
 

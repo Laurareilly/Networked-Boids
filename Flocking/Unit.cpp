@@ -62,6 +62,7 @@ PositionComponent* Unit::getPositionComponent() const
 
 PhysicsComponent* Unit::getPhysicsComponent() const
 {
+	ComponentID buttorsomething = mPhysicsComponentID;
 	PhysicsComponent* pComponent = gpGame->getComponentManager()->getPhysicsComponent(mPhysicsComponentID);
 	return pComponent;
 }

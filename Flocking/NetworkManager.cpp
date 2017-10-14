@@ -13,6 +13,9 @@ void NetworkManager::SendBoidData(std::map<UnitID, Unit*> units) //(Unit *units[
 	unsigned int bytesWritten = 0;
 	sendBuff[0] = ID_BOID_DATA;
 	++bytesWritten;
+	
+	int numBoids = 0;
+	bytesWritten += sizeof(int);
 
 	//for loop go thorugh each boid 
 	//for (unsigned int i = 0; i < units.size(); ++i)
@@ -24,6 +27,7 @@ void NetworkManager::SendBoidData(std::map<UnitID, Unit*> units) //(Unit *units[
 			break;
 		}
 
+
 		data[0].boidID = it->second->getID();
 		data[0].posX = it->second->getPositionComponent()->getPosition().getX();
 		data[0].posY = it->second->getPositionComponent()->getPosition().getY();
@@ -31,15 +35,19 @@ void NetworkManager::SendBoidData(std::map<UnitID, Unit*> units) //(Unit *units[
 		data[0].velX = it->second->getPhysicsComponent()->getVelocity().getX();
 		data[0].velY = it->second->getPhysicsComponent()->getVelocity().getY();
 
+		numBoids++;
 		bytesWritten += Write(sendBuff + bytesWritten);
 		//printf("bytes written: %i\n", bytesWritten);
 	}
 
+	//overwrite the purposefully blank thing earlier
+	if (numBoids > 0)
+		memcpy(sendBuff + 1, &numBoids, sizeof(int));
 
 	//send it
 	//mpPeer->Send(sendBuff, bytesWritten, HIGH_PRIORITY, RELIABLE_ORDERED, 0, UNASSIGNED_SYSTEM_ADDRESS, true); //Sends to everyone except for unassigned system address (USA) so we'll only send it to the client
-
-	//mpPeer->Send(sendBuff, bytesWritten, HIGH_PRIORITY, RELIABLE_ORDERED, 0, mpPeer->GetSystemAddressFromIndex(0), false); //Sends to everyone except for unassigned system address (USA) so we'll only send it to the client
+	if (bytesWritten > 5)
+		mpPeer->Send(sendBuff, bytesWritten, HIGH_PRIORITY, RELIABLE_ORDERED, 0, mpPeer->GetSystemAddressFromIndex(0), false); //Sends to everyone except for unassigned system address (USA) so we'll only send it to the client
 }
 
 unsigned int NetworkManager::Write(char *buffer)
@@ -65,7 +73,7 @@ unsigned int NetworkManager::Write(char *buffer)
 unsigned int NetworkManager::Read(char * buffer)
 {
 	unsigned int totalData = 0;
-	sscanf(buffer + totalData, "%c", &data[0].boidID);
+	/*sscanf(buffer + totalData, "%c", &data[0].boidID);
 	totalData += sizeof(char);
 	sscanf(buffer + totalData, "%f", &data[0].posX);
 	totalData += sizeof(float);
@@ -76,6 +84,19 @@ unsigned int NetworkManager::Read(char * buffer)
 	sscanf(buffer + totalData, "%f", &data[0].velY);
 	totalData += sizeof(float);
 	sscanf(buffer + totalData, "%f", &data[0].rotation);
+	totalData += sizeof(float);*/
+
+	memcpy(&data[0].boidID, buffer + totalData, sizeof(data[0].boidID));
+	totalData += sizeof(char);
+	memcpy(&data[0].posX, buffer + totalData, sizeof(data[0].posX));
+	totalData += sizeof(float);
+	memcpy(&data[0].posY, buffer + totalData, sizeof(data[0].posY));
+	totalData += sizeof(float);
+	memcpy(&data[0].velX, buffer + totalData, sizeof(data[0].velX));
+	totalData += sizeof(float);
+	memcpy(&data[0].velY, buffer + totalData, sizeof(data[0].velY));
+	totalData += sizeof(float);
+	memcpy(&data[0].rotation, buffer + totalData, sizeof(data[0].rotation));
 	totalData += sizeof(float);
 
 	return totalData;
@@ -189,13 +210,22 @@ void NetworkManager::Update()
 		case ID_BOID_DATA:
 		{
 			std::cout << "id boids data" << std::endl;
-			int position = 1;
 
 			gpGame->getUnitManager()->updateAll(true); //hehe
+			int position = 1;
+			char* buffer = (char*)mpPacket->data;
+			++buffer;
 
-			while (mpPacket->data[position] != NULL)
+			int numBoids = *(int *)buffer;
+			buffer += sizeof(int);
+			position += sizeof(int);
+
+			for (int i = 0; i < numBoids; ++i)
 			{
-				position += Read((char*)mpPacket->data + position);
+				int start = position;
+				position += Read(buffer);
+				//buffer += Read(buffer);
+				buffer += position - start;
 
 				mTmpUnit = gpGame->getUnitManager()->getUnit(data[0].boidID);
 
@@ -220,6 +250,35 @@ void NetworkManager::Update()
 					pUnit->setSteering(Steering::FLOCKING, ZERO_VECTOR2D, PLAYER_UNIT_ID);
 				}
 			}
+
+
+			//while ((char *)mpPacket->data[position] != NULL)
+			//{
+			//	position += Read((char*)mpPacket->data + position);
+
+			//	mTmpUnit = gpGame->getUnitManager()->getUnit(data[0].boidID);
+
+			//	if (mTmpUnit)
+			//	{
+			//		mTmpUnit->setID(data[0].boidID);
+			//		mTmpUnit->getPositionComponent()->setPosition(Vector2D(data[0].posX, data[0].posY));
+			//		mTmpUnit->getPositionComponent()->setFacing(data[0].rotation);
+			//		mTmpUnit->getPhysicsComponent()->setVelocity(Vector2D(data[0].velX, data[0].velY));
+			//		mTmpUnit->setShouldBeDeleted(false);
+			//	}
+			//	else
+			//	{
+			//		//add boid
+			//		UnitManager::mBoidsOnScreen++;
+			//		Unit* pUnit = gpGame->getUnitManager()->createUnit(*gpGame->getSpriteManager()->getSprite(AI_ICON_SPRITE_ID), true, PositionData(Vector2D(rand() % gpGame->getGraphicsSystem()->getWidth(), rand() % gpGame->getGraphicsSystem()->getHeight()), 0.0f));
+			//		pUnit->setID(data[0].boidID);
+			//		pUnit->getPositionComponent()->setFacing(data[0].rotation);
+			//		pUnit->getPositionComponent()->setPosition(Vector2D(data[0].posX, data[0].posY));
+			//		pUnit->getPhysicsComponent()->setVelocity(Vector2D(data[0].velX, data[0].velY));
+			//		pUnit->setShouldBeDeleted(false);
+			//		pUnit->setSteering(Steering::FLOCKING, ZERO_VECTOR2D, PLAYER_UNIT_ID);
+			//	}
+			//}
 
 			gpGame->getUnitManager()->deleteIfShouldBeDeleted();
 		}
